@@ -1,18 +1,23 @@
 <template>
   <nuxt-link to="/game" class="game">
-    <div
-      class="game__img"
-      style="background-image: url('https://cdn.vox-cdn.com/thumbor/3xHq2Shga3kfsw-lTM2Vlss3CgM=/0x0:2040x1360/1200x800/filters:focal(857x517:1183x843)/cdn.vox-cdn.com/uploads/chorus_image/image/65093706/mdoying_180118_2249_0338stills.0.jpg')"
-    ></div>
+    <img :src="`${_img}`" alt="" class="game__img" />
     <div class="game__info">
-      <div class="game__title">Lol</div>
-      <div class="game__viewers">1000 зрителей</div>
+      <div class="game__title">{{ title }}</div>
+      <!-- <div class="game__viewers">1000 зрителей</div> -->
     </div>
   </nuxt-link>
 </template>
 
 <script>
-export default {}
+export default {
+  props: ['title', 'img'],
+  computed: {
+    _img() {
+      const str = this.img.slice(0, -20)
+      return `${str}285x380.jpg`
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -23,8 +28,6 @@ export default {}
 
 .game__img {
   width: 20%;
-  background-size: cover;
-  background-position: center;
 }
 
 .game__info {
