@@ -1,9 +1,17 @@
 <template>
-  <div></div>
+  <div class="games">
+    <Game />
+    <Game />
+    <Game />
+    <Game />
+  </div>
 </template>
 
 <script>
-export default {}
+import Game from '~/components/main-page/Game'
+export default {
+  components: { Game }
+}
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>
