@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/stream?channel=${channelId}`" class="stream">
+  <nuxt-link :to="`/stream?channel=${userName}`" class="stream">
     <div :style="`background-image: url(${preview})`" class="stream__preview">
       <div class="stream__viewers">{{ viewers }} зрителей</div>
     </div>
