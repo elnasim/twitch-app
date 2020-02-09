@@ -1,16 +1,18 @@
 <template>
-  <nuxt-link :to="`/stream?channel=${userName}`" class="stream">
-    <div :style="`background-image: url(${preview})`" class="stream__preview">
-      <div class="stream__viewers">{{ viewers }} зрителей</div>
-    </div>
-    <div class="stream__info">
-      <img :src="logo" class="stream__logo" />
-      <div class="stream__info-row">
-        <div class="stream__profile-name">{{ userName }}</div>
-        <div class="stream__title">{{ title }}</div>
+  <div class="col">
+    <nuxt-link :to="`/stream?channel=${userName}`" class="stream">
+      <div :style="`background-image: url(${preview})`" class="stream__preview">
+        <div class="stream__viewers">{{ viewers }} зрителей</div>
       </div>
-    </div>
-  </nuxt-link>
+      <div class="stream__info">
+        <img :src="logo" class="stream__logo" />
+        <div class="stream__info-row">
+          <div class="stream__profile-name">{{ userName }}</div>
+          <div class="stream__title">{{ title }}</div>
+        </div>
+      </div>
+    </nuxt-link>
+  </div>
 </template>
 
 <script>
@@ -45,6 +47,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.col {
+  width: 50%;
+}
+
 .stream {
   display: flex;
   flex-direction: column;

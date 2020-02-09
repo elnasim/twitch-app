@@ -1,11 +1,13 @@
 <template>
-  <nuxt-link :to="`/game?title=${title}`" class="game">
-    <img :src="`${img}`" alt="" class="game__img" />
-    <div class="game__info">
-      <div class="game__title">{{ title }}</div>
-      <div class="game__viewers">1000 зрителей</div>
-    </div>
-  </nuxt-link>
+  <div class="col">
+    <nuxt-link :to="`/game?title=${title}`" class="game">
+      <img :src="`${img}`" alt="" class="game__img" />
+      <div class="game__info">
+        <div class="game__title">{{ title }}</div>
+        <div class="game__viewers">{{ viewers }} зрителей</div>
+      </div>
+    </nuxt-link>
+  </div>
 </template>
 
 <script>
@@ -24,8 +26,8 @@ export default {
       default: null
     },
     viewers: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     }
   },
   computed: {
@@ -38,6 +40,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.col {
+  width: 50%;
+}
+
 .game {
   display: flex;
   border-bottom: 1px solid rgba(#fff, 0.5);

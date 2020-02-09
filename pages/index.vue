@@ -6,8 +6,8 @@
       :img="item.game.box.large"
       :title="item.game.name"
       :id="item.game._id"
+      :viewers="item.viewers"
     />
-    <button @click="_moreGames()">More games</button>
   </div>
 </template>
 
@@ -31,4 +31,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.games {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>
