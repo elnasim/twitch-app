@@ -1,10 +1,19 @@
 <template>
-  <div class="layout-stream">
+  <div class="layout-stream" ref="layout">
     <div class="content">
       <nuxt />
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  mounted() {
+    this.$refs.layout.requestFullscreen()
+  }
+}
+</script>
+>
 
 <style lang="scss" scoped>
 .content {

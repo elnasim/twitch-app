@@ -55,6 +55,13 @@ export default {
   /*
    ** Build configuration
    */
+  pwa: {
+    manifest: {
+      name: 'myTwitch-v1',
+      lang: 'ru',
+      display: 'fullscreen'
+    }
+  },
   build: {
     /*
      ** You can extend webpack config here
