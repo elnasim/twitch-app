@@ -1,16 +1,33 @@
 <template>
-  <nuxt-link to="/game" class="game">
-    <img :src="`${_img}`" alt="" class="game__img" />
+  <nuxt-link :to="`/game?title=${title}`" class="game">
+    <img :src="`${img}`" alt="" class="game__img" />
     <div class="game__info">
       <div class="game__title">{{ title }}</div>
-      <!-- <div class="game__viewers">1000 зрителей</div> -->
+      <div class="game__viewers">1000 зрителей</div>
     </div>
   </nuxt-link>
 </template>
 
 <script>
 export default {
-  props: ['title', 'img'],
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    img: {
+      type: String,
+      default: ''
+    },
+    id: {
+      type: Number,
+      default: null
+    },
+    viewers: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     _img() {
       const str = this.img.slice(0, -20)
@@ -27,7 +44,9 @@ export default {
 }
 
 .game__img {
-  width: 20%;
+  height: 380px;
+  width: 285px;
+  display: block;
 }
 
 .game__info {

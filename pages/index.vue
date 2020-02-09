@@ -2,10 +2,12 @@
   <div class="games">
     <Game
       v-for="item of _getGames"
-      :key="item.id"
-      :img="item.box_art_url"
-      :title="item.name"
+      :key="item.game._id"
+      :img="item.game.box.large"
+      :title="item.game.name"
+      :id="item.game._id"
     />
+    <button @click="_moreGames()">More games</button>
   </div>
 </template>
 
@@ -20,6 +22,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getGames')
+  },
+  methods: {
+    _moreGames() {
+      this.$store.dispatch('getMoreGames')
+    }
   }
 }
 </script>

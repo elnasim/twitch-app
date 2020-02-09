@@ -1,23 +1,47 @@
 <template>
-  <div class="stream">
-    <div
-      class="stream__preview"
-      style="background-image: url('https://static-cdn.jtvnw.net/previews-ttv/live_user_moonmoon_ow-640x360.jpg')"
-    >
-      <div class="stream__viewers">1 зрителей</div>
+  <nuxt-link :to="`/stream?channel=${channelId}`" class="stream">
+    <div :style="`background-image: url(${preview})`" class="stream__preview">
+      <div class="stream__viewers">{{ viewers }} зрителей</div>
     </div>
     <div class="stream__info">
-      <img src="#" class="stream__logo" />
+      <img :src="logo" class="stream__logo" />
       <div class="stream__info-row">
-        <div class="stream__profile-name">Lirik</div>
-        <div class="stream__title">Название стрима</div>
+        <div class="stream__profile-name">{{ userName }}</div>
+        <div class="stream__title">{{ title }}</div>
       </div>
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    preview: {
+      type: String,
+      default: ''
+    },
+    viewers: {
+      type: Number,
+      default: null
+    },
+    logo: {
+      type: String,
+      default: ''
+    },
+    userName: {
+      type: String,
+      default: ''
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    channelId: {
+      type: Number,
+      default: null
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -34,6 +58,7 @@ export default {}
 
 .stream__logo {
   width: 30px;
+  height: 30px;
 }
 
 .stream__profile-name {
