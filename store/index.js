@@ -14,11 +14,17 @@ export const mutations = {
 
   SET_PAGINATION(state, payload) {
     state.paginationId = payload
+  },
+
+  RESET_GAMES(state) {
+    state.games = []
   }
 }
 
 export const actions = {
   async getGames({ commit }) {
+    commit('RESET_GAMES')
+
     const config = {
       headers: {
         'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',

@@ -46,7 +46,9 @@ export default {
   },
   methods: {
     async __getStreams() {
+      this.isLoading = true
       await this.$store.dispatch('game/getGames', this.title)
+      this.isLoading = false
     },
     async __moreStreams() {
       this.isLoading = true

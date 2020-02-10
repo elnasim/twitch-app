@@ -1,5 +1,5 @@
 export const state = () => ({
-  streams: null,
+  streams: [],
   paginationID: 0
 })
 
@@ -14,11 +14,17 @@ export const mutations = {
 
   SET_PAGINATION(state, payload) {
     state.paginationID = payload
+  },
+
+  RESET_STREAMS(state) {
+    state.streams = []
   }
 }
 
 export const actions = {
   async getGames({ commit }, payload) {
+    commit('RESET_STREAMS')
+
     const config = {
       headers: {
         'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
