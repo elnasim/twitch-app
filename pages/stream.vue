@@ -1,6 +1,6 @@
 <template>
   <div class="stream">
-    <div :style="`width: ${playerSize}%`" class="player-wrapper">
+    <div ref="playerWrapper" class="player-wrapper">
       <div
         @dblclick="changePlayerSize()"
         @click="closeQualities()"
@@ -24,7 +24,7 @@
       />
     </div>
 
-    <!-- <div class="chat">
+    <div class="chat">
       <iframe
         :src="`https://www.twitch.tv/embed/${userName}/chat?darkpopout`"
         frameborder="0"
@@ -33,7 +33,7 @@
         width="100%"
       >
       </iframe>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -45,7 +45,6 @@ export default {
   components: { QualityChange },
   data: () => ({
     userName: null,
-    playerSize: 70,
     player: null,
     qualities: [],
     showQualityChange: false
@@ -78,11 +77,7 @@ export default {
       this.showQualityChange = false
     },
     changePlayerSize() {
-      if (this.playerSize === 100) {
-        this.playerSize = 70
-      } else if (this.playerSize === 70) {
-        this.playerSize = 100
-      }
+      this.$refs.playerWrapper.requestFullscreen()
     },
     _back() {
       this.$router.back()
@@ -101,6 +96,7 @@ export default {
 
 .player-wrapper {
   position: relative;
+  width: 70%;
 }
 
 .player {
