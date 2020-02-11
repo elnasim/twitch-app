@@ -9,7 +9,7 @@
 <script>
 export default {
   mounted() {
-    this.$refs.layout.requestFullscreen()
+    // this.$refs.layout.requestFullscreen()
   }
 }
 </script>
