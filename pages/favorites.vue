@@ -1,8 +1,8 @@
 <template>
   <div>
-    <nuxt-link v-if="!_isAuth" to="/auth">Авторизация</nuxt-link>
+    <nuxt-link v-if="_isAuth === false" to="/auth">Авторизация</nuxt-link>
 
-    <div v-else class="favorites-page">
+    <div v-else-if="_isAuth === true" class="favorites-page">
       <Stream
         v-for="item of _getFavorites"
         :key="item._id"

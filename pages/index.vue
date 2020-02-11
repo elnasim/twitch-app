@@ -38,7 +38,7 @@ export default {
       const yOffset = window.pageYOffset
       const windowHeight = window.innerHeight
       const y = yOffset + windowHeight
-      if (y >= bodyHeight && !this.isLoading) {
+      if (y >= bodyHeight - 50 && !this.isLoading) {
         this.__moreGames()
       }
     })
