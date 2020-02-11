@@ -24,7 +24,7 @@
       />
     </div>
 
-    <div class="chat">
+    <!-- <div class="chat">
       <iframe
         :src="`https://www.twitch.tv/embed/${userName}/chat?darkpopout`"
         frameborder="0"
@@ -33,7 +33,7 @@
         width="100%"
       >
       </iframe>
-    </div>
+    </div> -->
   </div>
 </template>
 

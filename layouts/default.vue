@@ -16,6 +16,9 @@ export default {
   components: {
     Nav,
     Header
+  },
+  mounted() {
+    this.$store.dispatch('auth/validateAuth')
   }
 }
 </script>

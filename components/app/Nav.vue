@@ -2,7 +2,7 @@
   <nav class="nav">
     <nuxt-link to="/" class="nav__link">Игры</nuxt-link>
     <nuxt-link to="/favorites" class="nav__link">Подписки</nuxt-link>
-    <nuxt-link to="/2" class="nav__link">Настройки</nuxt-link>
+    <nuxt-link to="/settings" class="nav__link">Настройки</nuxt-link>
   </nav>
 </template>
 

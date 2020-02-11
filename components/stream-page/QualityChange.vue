@@ -1,11 +1,11 @@
 <template>
   <dir>
-    <div class="quality-change" v-if="isShow">
+    <div v-if="isShow" class="quality-change">
       <div
-        @click="changeQuality(item.group)"
-        class="quality"
         v-for="item of qualities"
         :key="item.group"
+        @click="changeQuality(item.group)"
+        class="quality"
       >
         {{ item.name }}
       </div>

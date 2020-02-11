@@ -1,14 +1,19 @@
-export const state = () => ({})
+export const state = () => ({
+  favorites: []
+})
 
-export const mutations = {}
+export const mutations = {
+  SET_FAVORITES(state, payload) {
+    state.favorites = payload
+  }
+}
 
 export const actions = {
-  async getFavorites() {
+  async getFavorites({ commit }) {
     const config = {
       headers: {
-        'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
         accept: 'application/vnd.twitchtv.v5+json',
-        Authorization: 'OAuth vlkukalk93bbikbzdrh7xyw5g5ykoq'
+        Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
       }
     }
 
@@ -17,6 +22,6 @@ export const actions = {
       config
     )
 
-    console.log('-->', data)
+    commit('SET_FAVORITES', data.streams)
   }
 }

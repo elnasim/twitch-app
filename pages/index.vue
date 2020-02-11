@@ -28,6 +28,10 @@ export default {
     }
   },
   mounted() {
+    if (this.$route.hash) {
+      this.$store.dispatch('auth/setToken', this.$route.hash)
+      this.$router.push('/')
+    }
     this.__getGames()
     window.addEventListener('scroll', () => {
       const bodyHeight = document.body.clientHeight

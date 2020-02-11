@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-stream" ref="layout">
+  <div ref="layout" class="layout-stream">
     <div class="content">
       <nuxt />
     </div>
