@@ -49,6 +49,7 @@ export default {
       await this.$store.dispatch('getGames')
       this.isLoading = false
     },
+
     async __moreGames() {
       this.isLoading = true
       await this.$store.dispatch('getMoreGames')

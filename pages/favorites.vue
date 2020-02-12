@@ -1,6 +1,8 @@
 <template>
   <div>
-    <nuxt-link v-if="_isAuth === false" to="/auth">Авторизация</nuxt-link>
+    <nuxt-link v-if="_isAuth === false" to="/auth" class="favotites-auth-btn">
+      Авторизация
+    </nuxt-link>
 
     <div v-else-if="_isAuth === true" class="favorites-page">
       <Stream
@@ -40,5 +42,17 @@ export default {
 .favorites-page {
   display: flex;
   flex-wrap: wrap;
+}
+
+.favotites-auth-btn {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  background-color: #fff;
+  color: #000000;
+  padding: 20px 4px;
+  border-radius: 4px;
+  margin: 40px auto;
 }
 </style>

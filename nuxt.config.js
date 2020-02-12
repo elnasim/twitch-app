@@ -57,7 +57,7 @@ export default {
    */
   pwa: {
     manifest: {
-      name: 'myTwitch-v1',
+      name: 'myTwitch-v0.2',
       lang: 'ru',
       display: 'fullscreen'
     }

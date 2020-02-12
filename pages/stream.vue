@@ -9,10 +9,20 @@
         <div @click.stop="_back()" class="player__back">
           <i class="fas fa-arrow-left"></i>
         </div>
+
+        <div @click.stop="_follow()" class="player__follow">
+          <i class="fas fa-heart"></i>
+        </div>
+
         <div @click.stop="showQualities()" class="player__change-quality">
           <i class="fas fa-cog"></i>
         </div>
+
         <div class="player__qualities"></div>
+
+        <div v-if="isPlayerLoading" class="player__loading">
+          Loading...
+        </div>
       </div>
 
       <div ref="player" class="player"></div>
@@ -24,7 +34,10 @@
       />
     </div>
 
-    <div class="chat">
+    <div
+      :style="isPlayerFull ? 'display: none' : 'display: block'"
+      class="chat"
+    >
       <iframe
         :src="`https://www.twitch.tv/embed/${userName}/chat?darkpopout`"
         frameborder="0"
@@ -47,10 +60,15 @@ export default {
     userName: null,
     player: null,
     qualities: [],
-    showQualityChange: false
+    showQualityChange: false,
+    isPlayerFull: false,
+    isPlayerLoading: false
   }),
   mounted() {
+    this.isPlayerLoading = true
+
     this.userName = this.$route.query.channel
+
     const options = {
       channel: this.userName,
       controls: false,
@@ -58,11 +76,19 @@ export default {
       height: '100%',
       allowfullscreen: true
     }
+
     // eslint-disable-next-line
     this.player = new Twitch.Player(this.$refs.player, options)
+
     // eslint-disable-next-line
     this.player.addEventListener(Twitch.Player.PLAYING, () => {
       this.qualities = this.player.getQualities()
+      this.isPlayerLoading = false
+    })
+
+    // eslint-disable-next-line
+    this.player.addEventListener(Twitch.Player.ENDED, () => {
+      this.isPlayerLoading = true
     })
   },
   methods: {
@@ -77,10 +103,15 @@ export default {
       this.showQualityChange = false
     },
     changePlayerSize() {
-      this.$refs.playerWrapper.requestFullscreen()
+      // this.$refs.playerWrapper.requestFullscreen()
+      this.isPlayerFull = !this.isPlayerFull
     },
     _back() {
       this.$router.back()
+    },
+    _follow() {
+      const userID = this.$store.state.auth.userID
+      this.$store.dispatch('favorites/followChannel', [userID, this.userName])
     }
   }
 }
@@ -96,7 +127,7 @@ export default {
 
 .player-wrapper {
   position: relative;
-  width: 70%;
+  flex: 1;
 }
 
 .player {
@@ -140,12 +171,43 @@ export default {
   left: 10px;
   top: 10px;
   cursor: pointer;
+  z-index: 4;
   i {
     font-size: 30px;
   }
 }
 
+.player__follow {
+  color: #ffffff;
+  user-select: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  z-index: 4;
+  i {
+    font-size: 30px;
+  }
+}
+
+.player__loading {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  background-color: rgba(#000, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+  color: #ffffff;
+}
+
 .chat {
-  flex: 1;
+  width: 30%;
 }
 </style>
