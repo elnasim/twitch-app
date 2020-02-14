@@ -1,5 +1,5 @@
 export const state = () => ({
-  isAuth: false,
+  isAuth: null,
   userID: null
 })
 
@@ -42,6 +42,8 @@ export const actions = {
   },
 
   async validateAuth({ commit }) {
+    console.log('-->', 'validateAuth')
+
     const config = {
       headers: {
         accept: 'application/vnd.twitchtv.v5+json',
@@ -54,6 +56,8 @@ export const actions = {
         'https://id.twitch.tv/oauth2/validate',
         config
       )
+
+      console.log('-->', authData)
 
       if (authData) {
         commit('SET_IS_AUTH', true)
