@@ -1,6 +1,9 @@
 <template>
   <div class="col">
-    <nuxt-link :to="`/stream?channel=${userName}`" class="stream">
+    <nuxt-link
+      :to="`/stream?channel=${userName}&id=${channelId}`"
+      class="stream"
+    >
       <div :style="`background-image: url(${preview})`" class="stream__preview">
         <div class="stream__viewers">{{ viewers }} зрителей</div>
       </div>

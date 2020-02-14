@@ -11,7 +11,8 @@
         </div>
 
         <div @click.stop="_follow()" class="player__follow">
-          <i class="fas fa-heart"></i>
+          <i v-if="isFollowed" class="fas fa-heart"></i>
+          <i v-else class="far fa-heart"></i>
         </div>
 
         <div @click.stop="showQualities()" class="player__change-quality">
@@ -63,7 +64,8 @@ export default {
     qualities: [],
     showQualityChange: false,
     isPlayerFull: false,
-    isPlayerLoading: false
+    isPlayerLoading: false,
+    isFollowed: false
   }),
   mounted() {
     this.isPlayerLoading = true
@@ -92,20 +94,24 @@ export default {
     showQualities() {
       this.showQualityChange = true
     },
+
     closeQualities() {
       this.showQualityChange = false
     },
+
     changeQuality(q) {
       this.player.setQuality(q)
       this.showQualityChange = false
     },
+
     changePlayerSize() {
-      // this.$refs.playerWrapper.requestFullscreen()
       this.isPlayerFull = !this.isPlayerFull
     },
+
     _back() {
       this.$router.back()
     },
+
     _follow() {
       const userID = this.$store.state.auth.userID
       this.$store.dispatch('favorites/followChannel', [userID, this.userID])

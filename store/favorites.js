@@ -29,7 +29,7 @@ export const actions = {
 
   async followChannel({ commit }, followData) {
     try {
-      const data = await this.$axios({
+      await this.$axios({
         method: 'put',
         url: `https://api.twitch.tv/kraken/users/${followData[0]}/follows/channels/${followData[1]}`,
         headers: {
@@ -38,10 +38,6 @@ export const actions = {
           Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
         }
       })
-
-      console.log('-->', data)
-    } catch (error) {
-      console.log('-->', error)
-    }
+    } catch (error) {}
   }
 }
