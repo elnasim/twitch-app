@@ -10,9 +10,11 @@
           <i class="fas fa-arrow-left"></i>
         </div>
 
-        <div @click.stop="_follow()" class="player__follow">
-          <i v-if="isFollowed" class="fas fa-heart"></i>
-          <i v-else class="far fa-heart"></i>
+        <div @click.stop="_unFollow()" v-if="isFollowed" class="player__follow">
+          <i class="fas fa-heart"></i>
+        </div>
+        <div @click.stop="_follow()" v-else class="player__unfollow">
+          <i class="far fa-heart"></i>
         </div>
 
         <div @click.stop="showQualities()" class="player__change-quality">
@@ -77,8 +79,7 @@ export default {
       channel: this.userName,
       controls: false,
       width: '100%',
-      height: '100%',
-      allowfullscreen: true
+      height: '100%'
     }
 
     // eslint-disable-next-line
@@ -89,6 +90,7 @@ export default {
       this.qualities = this.player.getQualities()
       this.isPlayerLoading = false
     })
+    this.__checkFollowChannel()
   },
   methods: {
     showQualities() {
@@ -115,6 +117,20 @@ export default {
     _follow() {
       const userID = this.$store.state.auth.userID
       this.$store.dispatch('favorites/followChannel', [userID, this.userID])
+    },
+
+    _unFollow() {
+      const userID = this.$store.state.auth.userID
+      this.$store.dispatch('favorites/unFollowChannel', [userID, this.userID])
+    },
+
+    async __checkFollowChannel() {
+      const userID = this.$store.state.auth.userID
+      const data = await this.$store.dispatch('favorites/checkFollowChannel', [
+        userID,
+        this.userID
+      ])
+      this.isFollowed = data
     }
   }
 }
@@ -180,7 +196,8 @@ export default {
   }
 }
 
-.player__follow {
+.player__follow,
+.player__unfollow {
   color: #ffffff;
   user-select: none;
   position: absolute;

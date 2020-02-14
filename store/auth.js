@@ -42,8 +42,6 @@ export const actions = {
   },
 
   async validateAuth({ commit }) {
-    console.log('-->', 'validateAuth')
-
     const config = {
       headers: {
         accept: 'application/vnd.twitchtv.v5+json',
@@ -57,14 +55,10 @@ export const actions = {
         config
       )
 
-      console.log('-->', authData)
-
-      if (authData) {
-        commit('SET_IS_AUTH', true)
-        commit('SET_USER_ID', authData.user_id)
-      } else {
-        commit('SET_IS_AUTH', false)
-      }
-    } catch (e) {}
+      commit('SET_IS_AUTH', true)
+      commit('SET_USER_ID', authData.user_id)
+    } catch (e) {
+      commit('SET_IS_AUTH', false)
+    }
   }
 }
