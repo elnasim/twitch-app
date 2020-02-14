@@ -126,13 +126,17 @@ export default {
     },
 
     async _unFollow() {
-      const userID = this.$store.state.auth.userID
-      const data = await this.$store.dispatch('favorites/unFollowChannel', [
-        userID,
-        this.userID
-      ])
-      if (data) {
-        this.isFollowed = false
+      const res = confirm('Вы уверены, что хотите отписаться?')
+
+      if (res) {
+        const userID = this.$store.state.auth.userID
+        const data = await this.$store.dispatch('favorites/unFollowChannel', [
+          userID,
+          this.userID
+        ])
+        if (data) {
+          this.isFollowed = false
+        }
       }
     },
 
