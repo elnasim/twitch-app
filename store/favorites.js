@@ -12,6 +12,7 @@ export const actions = {
           Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
         }
       })
+      return true
     } catch (error) {}
   },
 
@@ -26,6 +27,7 @@ export const actions = {
           Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
         }
       })
+      return true
     } catch (error) {}
   },
 

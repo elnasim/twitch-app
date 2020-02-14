@@ -114,14 +114,26 @@ export default {
       this.$router.back()
     },
 
-    _follow() {
+    async _follow() {
       const userID = this.$store.state.auth.userID
-      this.$store.dispatch('favorites/followChannel', [userID, this.userID])
+      const data = await this.$store.dispatch('favorites/followChannel', [
+        userID,
+        this.userID
+      ])
+      if (data) {
+        this.isFollowed = true
+      }
     },
 
-    _unFollow() {
+    async _unFollow() {
       const userID = this.$store.state.auth.userID
-      this.$store.dispatch('favorites/unFollowChannel', [userID, this.userID])
+      const data = await this.$store.dispatch('favorites/unFollowChannel', [
+        userID,
+        this.userID
+      ])
+      if (data) {
+        this.isFollowed = false
+      }
     },
 
     async __checkFollowChannel() {
