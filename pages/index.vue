@@ -2,7 +2,7 @@
   <div>
     <div class="games">
       <Game
-        v-for="item of _getGames"
+        v-for="item of games"
         :key="item.game._id"
         :img="item.game.box.large"
         :title="item.game.name"
@@ -17,42 +17,69 @@
 <script>
 import Game from '~/components/main-page/Game'
 import Loading from '~/components/app/Loading'
+
 export default {
   components: { Game, Loading },
   data: () => ({
-    isLoading: false
+    isLoading: false,
+    games: null,
+    paginationId: null
   }),
-  computed: {
-    _getGames() {
-      return this.$store.state.games
-    }
-  },
   mounted() {
+    // перенаправление на главную при получении токена атворизации
     if (this.$route.hash) {
       this.$store.dispatch('auth/setToken', this.$route.hash)
       this.$router.push('/')
     }
+
     this.__getGames()
+
     window.addEventListener('scroll', () => {
       const bodyHeight = document.body.clientHeight
       const yOffset = window.pageYOffset
       const windowHeight = window.innerHeight
       const y = yOffset + windowHeight
-      if (y >= bodyHeight - 50 && !this.isLoading) {
+      if (y >= bodyHeight - 150 && !this.isLoading) {
         this.__moreGames()
       }
     })
   },
   methods: {
-    async __getGames() {
+    async __moreGames() {
       this.isLoading = true
-      await this.$store.dispatch('getGames')
+      const config = {
+        headers: {
+          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
+          accept: 'application/vnd.twitchtv.v5+json'
+        }
+      }
+      const data = await this.$axios.$get(
+        `https://api.twitch.tv/kraken/games/top?offset=${this.paginationId}`,
+        config
+      )
+
+      this.games = this.games.concat(data.top)
+      this.paginationId = this.paginationId + 10
       this.isLoading = false
     },
 
-    async __moreGames() {
+    async __getGames() {
       this.isLoading = true
-      await this.$store.dispatch('getMoreGames')
+
+      const config = {
+        headers: {
+          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
+          accept: 'application/vnd.twitchtv.v5+json'
+        }
+      }
+
+      const data = await this.$axios.$get(
+        'https://api.twitch.tv/kraken/games/top',
+        config
+      )
+
+      this.paginationId = 10
+      this.games = data.top
       this.isLoading = false
     }
   }

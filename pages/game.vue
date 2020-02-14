@@ -2,7 +2,7 @@
   <div>
     <div class="game-page">
       <Stream
-        v-for="item of _getStreams"
+        v-for="item of streams"
         :key="item._id"
         :preview="item.preview.large"
         :title="item.channel.status"
@@ -19,19 +19,18 @@
 <script>
 import Stream from '~/components/game-page/Stream'
 import Loading from '~/components/app/Loading'
+
 export default {
   components: { Stream, Loading },
   data: () => ({
     isLoading: false,
-    title: ''
+    title: '',
+    streams: null,
+    paginationID: null
   }),
-  computed: {
-    _getStreams() {
-      return this.$store.state.game.streams
-    }
-  },
   mounted() {
     this.title = this.$route.query.title
+
     this.__getStreams()
 
     window.addEventListener('scroll', () => {
@@ -39,7 +38,7 @@ export default {
       const yOffset = window.pageYOffset
       const windowHeight = window.innerHeight
       const y = yOffset + windowHeight
-      if (y >= bodyHeight && !this.isLoading) {
+      if (y >= bodyHeight - 150 && !this.isLoading) {
         this.__moreStreams()
       }
     })
@@ -47,12 +46,38 @@ export default {
   methods: {
     async __getStreams() {
       this.isLoading = true
-      await this.$store.dispatch('game/getGames', this.title)
+      const config = {
+        headers: {
+          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
+          accept: 'application/vnd.twitchtv.v5+json'
+        }
+      }
+
+      const data = await this.$axios.$get(
+        `https://api.twitch.tv/kraken/streams/?game=${this.title}`,
+        config
+      )
+
+      this.streams = data.streams
+      this.paginationID = 25
       this.isLoading = false
     },
+
     async __moreStreams() {
       this.isLoading = true
-      await this.$store.dispatch('game/moreGames', this.title)
+      const config = {
+        headers: {
+          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
+          accept: 'application/vnd.twitchtv.v5+json'
+        }
+      }
+      const data = await this.$axios.$get(
+        `https://api.twitch.tv/kraken/streams/?game=${this.title}&offset=${this.paginationID}`,
+        config
+      )
+
+      this.streams = this.streams.concat(data.streams)
+      this.paginationID = this.paginationID + 25
       this.isLoading = false
     }
   }
