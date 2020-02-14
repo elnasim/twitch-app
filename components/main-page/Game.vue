@@ -1,6 +1,6 @@
 <template>
   <div class="col">
-    <nuxt-link :to="`/game?title=${title}`" class="game">
+    <nuxt-link :to="`/game?title=${title}&lang=all`" class="game">
       <img :src="`${img}`" alt="" class="game__img" />
       <div class="game__info">
         <div class="game__title">{{ title }}</div>

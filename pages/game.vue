@@ -1,9 +1,20 @@
 <template>
   <div>
     <div class="game-page">
-      <div @click="__getStreamsByLanguage()" class="language-filter">
+      <nuxt-link
+        v-if="language === 'all'"
+        to="/game?title=League%20of%20Legends&lang=ru"
+        class="language-filter"
+      >
         Показать трансляции на русском
-      </div>
+      </nuxt-link>
+      <nuxt-link
+        v-if="language === 'ru'"
+        to="/game?title=League%20of%20Legends&lang=all"
+        class="language-filter"
+      >
+        Показать трансляции на всех языках
+      </nuxt-link>
       <Stream
         v-for="item of streams"
         :key="item._id"
@@ -28,11 +39,19 @@ export default {
   data: () => ({
     isLoading: false,
     title: '',
+    language: '',
     streams: null,
     paginationID: null
   }),
+  watch: {},
+  beforeRouteUpdate(to, from, next) {
+    next()
+    this.language = this.$route.query.lang
+    this.__getStreams()
+  },
   mounted() {
     this.title = this.$route.query.title
+    this.language = this.$route.query.lang
 
     this.__getStreams()
 
@@ -49,6 +68,7 @@ export default {
   methods: {
     async __getStreams() {
       this.isLoading = true
+      this.streams = null
       const config = {
         headers: {
           'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
@@ -56,10 +76,19 @@ export default {
         }
       }
 
-      const data = await this.$axios.$get(
-        `https://api.twitch.tv/kraken/streams/?game=${this.title}`,
-        config
-      )
+      let data
+
+      if (this.language === 'all') {
+        data = await this.$axios.$get(
+          `https://api.twitch.tv/kraken/streams/?game=${this.title}`,
+          config
+        )
+      } else {
+        data = await this.$axios.$get(
+          `https://api.twitch.tv/kraken/streams/?game=${this.title}&language=${this.language}`,
+          config
+        )
+      }
 
       this.streams = data.streams
       this.paginationID = 25
@@ -74,32 +103,23 @@ export default {
           accept: 'application/vnd.twitchtv.v5+json'
         }
       }
-      const data = await this.$axios.$get(
-        `https://api.twitch.tv/kraken/streams/?game=${this.title}&offset=${this.paginationID}`,
-        config
-      )
+
+      let data
+
+      if (this.language === 'all') {
+        data = await this.$axios.$get(
+          `https://api.twitch.tv/kraken/streams/?game=${this.title}&offset=${this.paginationID}`,
+          config
+        )
+      } else {
+        data = await this.$axios.$get(
+          `https://api.twitch.tv/kraken/streams/?game=${this.title}&offset=${this.paginationID}&language=${this.language}`,
+          config
+        )
+      }
 
       this.streams = this.streams.concat(data.streams)
       this.paginationID = this.paginationID + 25
-      this.isLoading = false
-    },
-
-    async __getStreamsByLanguage() {
-      this.isLoading = true
-      const config = {
-        headers: {
-          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
-          accept: 'application/vnd.twitchtv.v5+json'
-        }
-      }
-
-      const data = await this.$axios.$get(
-        `https://api.twitch.tv/kraken/streams/?game=${this.title}&language=ru`,
-        config
-      )
-
-      this.streams = data.streams
-      this.paginationID = 25
       this.isLoading = false
     }
   }
