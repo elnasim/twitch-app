@@ -27,22 +27,17 @@ export const actions = {
     } catch (error) {}
   },
 
-  async followChannel({ commit }, data1) {
-    const config = {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Request-Method': 'PUT',
-        accept: 'application/vnd.twitchtv.v5+json',
-        'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
-        Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
-      }
-    }
-
+  async followChannel({ commit }, followData) {
     try {
-      const data = await this.$axios.$put(
-        `https://api.twitch.tv/kraken/users/39462167/follows/channels/129454141`,
-        config
-      )
+      const data = await this.$axios({
+        method: 'put',
+        url: `https://api.twitch.tv/kraken/users/${followData[0]}/follows/channels/${followData[1]}`,
+        headers: {
+          accept: 'application/vnd.twitchtv.v5+json',
+          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
+          Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
+        }
+      })
 
       console.log('-->', data)
     } catch (error) {

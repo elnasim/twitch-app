@@ -58,6 +58,7 @@ export default {
   components: { QualityChange },
   data: () => ({
     userName: null,
+    userID: null,
     player: null,
     qualities: [],
     showQualityChange: false,
@@ -68,6 +69,7 @@ export default {
     this.isPlayerLoading = true
 
     this.userName = this.$route.query.channel
+    this.userID = this.$route.query.id
 
     const options = {
       channel: this.userName,
@@ -84,11 +86,6 @@ export default {
     this.player.addEventListener(Twitch.Player.PLAYING, () => {
       this.qualities = this.player.getQualities()
       this.isPlayerLoading = false
-    })
-
-    // eslint-disable-next-line
-    this.player.addEventListener(Twitch.Player.ENDED, () => {
-      this.isPlayerLoading = true
     })
   },
   methods: {
@@ -111,7 +108,7 @@ export default {
     },
     _follow() {
       const userID = this.$store.state.auth.userID
-      this.$store.dispatch('favorites/followChannel', [userID, this.userName])
+      this.$store.dispatch('favorites/followChannel', [userID, this.userID])
     }
   }
 }
