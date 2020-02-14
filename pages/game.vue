@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="game-page">
+      <div @click="__getStreamsByLanguage()" class="language-filter">
+        Показать трансляции на русском
+      </div>
       <Stream
         v-for="item of streams"
         :key="item._id"
@@ -79,6 +82,25 @@ export default {
       this.streams = this.streams.concat(data.streams)
       this.paginationID = this.paginationID + 25
       this.isLoading = false
+    },
+
+    async __getStreamsByLanguage() {
+      this.isLoading = true
+      const config = {
+        headers: {
+          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
+          accept: 'application/vnd.twitchtv.v5+json'
+        }
+      }
+
+      const data = await this.$axios.$get(
+        `https://api.twitch.tv/kraken/streams/?game=${this.title}&language=ru`,
+        config
+      )
+
+      this.streams = data.streams
+      this.paginationID = 25
+      this.isLoading = false
     }
   }
 }
@@ -88,5 +110,16 @@ export default {
 .game-page {
   display: flex;
   flex-wrap: wrap;
+}
+
+.language-filter {
+  width: 100%;
+  user-select: none;
+  background-color: rgba(#fff, 0.5);
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: 10px;
 }
 </style>
