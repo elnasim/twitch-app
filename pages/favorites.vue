@@ -43,14 +43,16 @@ export default {
         }
       }
 
-      try {
-        const data = await this.$axios.$get(
-          `https://api.twitch.tv/kraken/streams/followed`,
-          config
-        )
+      if (localStorage.getItem('myTwitchToken')) {
+        try {
+          const data = await this.$axios.$get(
+            `https://api.twitch.tv/kraken/streams/followed`,
+            config
+          )
 
-        this.favorites = data.streams
-      } catch (error) {}
+          this.favorites = data.streams
+        } catch (error) {}
+      }
     }
   }
 }

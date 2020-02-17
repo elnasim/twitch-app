@@ -34,6 +34,7 @@
         :qualities="qualities"
         :isShow="showQualityChange"
         :changeQuality="changeQuality"
+        :currQuality="currQuality"
       />
     </div>
 
@@ -64,6 +65,7 @@ export default {
     userID: null,
     player: null,
     qualities: [],
+    currQuality: null,
     showQualityChange: false,
     isPlayerFull: false,
     isPlayerLoading: false,
@@ -89,7 +91,9 @@ export default {
     this.player.addEventListener(Twitch.Player.PLAYING, () => {
       this.qualities = this.player.getQualities()
       this.isPlayerLoading = false
+      this.currQuality = this.player.getQuality()
     })
+
     this.__checkFollowChannel()
   },
   methods: {
@@ -141,6 +145,7 @@ export default {
     },
 
     async __checkFollowChannel() {
+      await this.$store.dispatch('auth/validateAuth')
       const userID = this.$store.state.auth.userID
       const data = await this.$store.dispatch('favorites/checkFollowChannel', [
         userID,

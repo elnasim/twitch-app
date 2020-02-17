@@ -10,7 +10,6 @@
 export default {
   mounted() {
     this.$refs.layout.requestFullscreen()
-    this.$store.dispatch('auth/validateAuth')
   }
 }
 </script>

@@ -5,6 +5,7 @@
         v-for="item of qualities"
         :key="item.group"
         @click="changeQuality(item.group)"
+        :class="{ active: currQuality === item.group }"
         class="quality"
       >
         {{ item.name }}
@@ -27,12 +28,16 @@ export default {
     changeQuality: {
       type: Function,
       default: null
+    },
+    currQuality: {
+      type: String,
+      default: null
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .quality-change {
   position: absolute;
   bottom: 0;
@@ -46,5 +51,9 @@ export default {
   padding: 5px 20px;
   color: #ffffff;
   cursor: pointer;
+  &.active {
+    color: #000000;
+    background-color: #fff;
+  }
 }
 </style>
