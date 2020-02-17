@@ -46,6 +46,8 @@ export const actions = {
       if (data.status === 200) {
         return true
       } else return false
-    } catch (error) {}
+    } catch (error) {
+      console.log('-->', error)
+    }
   }
 }

@@ -9,7 +9,9 @@
 <script>
 export default {
   mounted() {
-    this.$refs.layout.requestFullscreen()
+    this.$refs.layout.requestFullscreen().catch((err) => {
+      console.log('-->', err)
+    })
   }
 }
 </script>
