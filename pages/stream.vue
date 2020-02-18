@@ -3,22 +3,47 @@
     <div ref="playerWrapper" class="player-wrapper">
       <div
         @dblclick="changePlayerSize()"
-        @click="closeQualities()"
-        class="player__controls"
+        @click="closeQualities(), __showControls()"
+        class="player__controls-wrap"
       >
-        <div @click.stop="_back()" class="player__back">
-          <i class="fas fa-arrow-left"></i>
-        </div>
+        <div :class="{ active: isShowControls }" class="player__controls">
+          <div @click.stop="_back()" class="player__back">
+            <i class="fas fa-arrow-left"></i>
+          </div>
 
-        <div @click.stop="_unFollow()" v-if="isFollowed" class="player__follow">
-          <i class="fas fa-heart"></i>
-        </div>
-        <div @click.stop="_follow()" v-else class="player__unfollow">
-          <i class="far fa-heart"></i>
-        </div>
+          <div
+            @click.stop="_unFollow()"
+            v-if="isFollowed"
+            class="player__follow"
+          >
+            <i class="fas fa-heart"></i>
+          </div>
+          <div @click.stop="_follow()" v-else class="player__unfollow">
+            <i class="far fa-heart"></i>
+          </div>
 
-        <div @click.stop="showQualities()" class="player__change-quality">
-          <i class="fas fa-cog"></i>
+          <div v-if="streamInfo" class="stream__info">
+            <div class="stream__info-logo-col">
+              <div
+                :style="`background-image: url(${streamInfo.channel.logo})`"
+                class="stream__logo"
+              ></div>
+            </div>
+            <div class="stream__info-info-col">
+              <div class="stream__streamer">
+                {{ streamInfo.channel.display_name }}
+              </div>
+              <div class="stream__title">{{ streamInfo.channel.status }}</div>
+              <div class="stream__game">{{ streamInfo.game }}</div>
+              <div class="stream__viewers">
+                {{ streamInfo.viewers }} зрителей
+              </div>
+            </div>
+
+            <div @click.stop="showQualities()" class="player__change-quality">
+              <i class="fas fa-cog"></i>
+            </div>
+          </div>
         </div>
 
         <div class="player__qualities"></div>
@@ -38,28 +63,17 @@
       />
     </div>
 
-    <div
-      :style="isPlayerFull ? 'display: none' : 'display: block'"
-      class="chat"
-    >
-      <iframe
-        :src="`https://www.twitch.tv/embed/${userName}/chat?darkpopout`"
-        frameborder="0"
-        scrolling="no"
-        height="100%"
-        width="100%"
-      >
-      </iframe>
-    </div>
+    <Chat :isPlayerFull="isPlayerFull" :userName="userName" />
   </div>
 </template>
 
 <script>
 import QualityChange from '~/components/stream-page/QualityChange'
+import Chat from '~/components/stream-page/Chat'
 
 export default {
   layout: 'stream-page',
-  components: { QualityChange },
+  components: { QualityChange, Chat },
   data: () => ({
     userName: null,
     userID: null,
@@ -69,7 +83,9 @@ export default {
     showQualityChange: false,
     isPlayerFull: false,
     isPlayerLoading: false,
-    isFollowed: false
+    isFollowed: false,
+    streamInfo: null,
+    isShowControls: false
   }),
   mounted() {
     this.isPlayerLoading = true
@@ -83,6 +99,8 @@ export default {
       width: '100%',
       height: '100%'
     }
+
+    this.__getStreamInfo()
 
     // eslint-disable-next-line
     this.player = new Twitch.Player(this.$refs.player, options)
@@ -116,6 +134,18 @@ export default {
 
     _back() {
       this.$router.back()
+    },
+
+    __showControls() {
+      if (!this.isShowControls) {
+        this.isShowControls = true
+        const timeout = setTimeout(() => {
+          this.isShowControls = false
+        }, 3000)
+        clearTimeout(timeout)
+      } else {
+        this.isShowControls = false
+      }
     },
 
     async _follow() {
@@ -152,6 +182,19 @@ export default {
         this.userID
       ])
       this.isFollowed = data
+    },
+
+    async __getStreamInfo() {
+      const data = await this.$axios.$get(
+        `https://api.twitch.tv/kraken/streams/${this.userID}`,
+        {
+          headers: {
+            Accept: 'application/vnd.twitchtv.v5+json',
+            'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj'
+          }
+        }
+      )
+      this.streamInfo = data.stream
     }
   }
 }
@@ -180,7 +223,7 @@ export default {
   }
 }
 
-.player__controls {
+.player__controls-wrap {
   position: absolute;
   top: 0;
   right: 0;
@@ -190,6 +233,16 @@ export default {
   z-index: 1;
   justify-content: flex-end;
   user-select: none;
+}
+
+.player__controls {
+  opacity: 0;
+  transition: 0.25s;
+  user-select: none;
+  &.active {
+    opacity: 1;
+    user-select: all;
+  }
 }
 
 .player__change-quality {
@@ -248,7 +301,34 @@ export default {
   color: #ffffff;
 }
 
-.chat {
-  width: 30%;
+.stream__info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  padding: 10px;
+  color: #ffffff;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  z-index: 5;
+}
+
+.stream__info-logo-col {
+  padding: 0 10px;
+}
+
+.stream__info-info-col {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.stream__logo {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 100%;
 }
 </style>
