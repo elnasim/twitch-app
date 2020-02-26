@@ -5,7 +5,10 @@
       class="stream"
     >
       <div :style="`background-image: url(${preview})`" class="stream__preview">
-        <div class="stream__viewers">{{ viewers }} зрителей</div>
+        <div class="stream__viewers">
+          <span class="stream__viewers-round"></span>
+          {{ viewers }} зрителей
+        </div>
       </div>
       <div class="stream__info">
         <img :src="logo" class="stream__logo" />
@@ -51,7 +54,13 @@ export default {
 
 <style lang="scss" scoped>
 .col {
-  width: 50%;
+  width: 33.33%;
+  @media (max-width: 991px) {
+    width: 50%;
+  }
+  @media (max-width: 575px) {
+    width: 100%;
+  }
 }
 
 .stream {
@@ -67,7 +76,10 @@ export default {
 
 .stream__logo {
   width: 30px;
+  min-width: 30px;
   height: 30px;
+  border-radius: 100%;
+  margin-right: 10px;
 }
 
 .stream__profile-name {
@@ -95,5 +107,13 @@ export default {
 
 .stream__viewers {
   color: #ffffff;
+}
+
+.stream__viewers-round {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: red;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div class="col">
     <nuxt-link :to="`/game?title=${title}&lang=all`" class="game">
-      <img :src="`${img}`" alt="" class="game__img" />
+      <!-- <img :src="`${img}`" alt="" class="game__img" /> -->
+      <div :style="`background-image: url(${img})`" class="game__img"></div>
       <div class="game__info">
         <div class="game__title">{{ title }}</div>
         <div class="game__viewers">{{ viewers }} зрителей</div>
@@ -41,22 +42,37 @@ export default {
 
 <style lang="scss" scoped>
 .col {
-  width: 50%;
+  width: 33.33%;
+  @media (max-width: 991px) {
+    width: 50%;
+  }
+  @media (max-width: 575px) {
+    width: 100%;
+  }
 }
 
 .game {
   display: flex;
   border-bottom: 1px solid rgba(#fff, 0.5);
+  height: 200px;
 }
 
 .game__img {
-  height: 380px;
-  width: 285px;
+  background-size: cover;
+  background-position: center;
+  width: 40%;
   display: block;
+  overflow: hidden;
+  &::before {
+    content: '';
+    float: left;
+    padding-top: 140%;
+  }
 }
 
 .game__info {
   padding: 20px;
+  flex: 1;
 }
 
 .game__title {
