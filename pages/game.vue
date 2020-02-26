@@ -41,7 +41,8 @@ export default {
     title: '',
     language: '',
     streams: null,
-    paginationID: null
+    paginationID: null,
+    scrollLoadingData: null
   }),
   watch: {},
   beforeRouteUpdate(to, from, next) {
@@ -55,7 +56,7 @@ export default {
 
     this.__getStreams()
 
-    window.addEventListener('scroll', () => {
+    this.scrollLoadingData = () => {
       const bodyHeight = document.body.clientHeight
       const yOffset = window.pageYOffset
       const windowHeight = window.innerHeight
@@ -63,7 +64,12 @@ export default {
       if (y >= bodyHeight - 150 && !this.isLoading) {
         this.__moreStreams()
       }
-    })
+    }
+
+    window.addEventListener('scroll', this.scrollLoadingData)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.scrollLoadingData)
   },
   methods: {
     async __getStreams() {

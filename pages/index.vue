@@ -23,7 +23,8 @@ export default {
   data: () => ({
     isLoading: false,
     games: null,
-    paginationId: null
+    paginationId: null,
+    scrollLoadingData: null
   }),
   mounted() {
     // перенаправление на главную при получении токена атворизации
@@ -34,7 +35,7 @@ export default {
 
     this.__getGames()
 
-    window.addEventListener('scroll', () => {
+    this.scrollLoadingData = () => {
       const bodyHeight = document.body.clientHeight
       const yOffset = window.pageYOffset
       const windowHeight = window.innerHeight
@@ -42,7 +43,12 @@ export default {
       if (y >= bodyHeight - 150 && !this.isLoading) {
         this.__moreGames()
       }
-    })
+    }
+
+    window.addEventListener('scroll', this.scrollLoadingData)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.scrollLoadingData)
   },
   methods: {
     async __moreGames() {
