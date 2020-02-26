@@ -110,6 +110,7 @@ export default {
       this.qualities = this.player.getQualities()
       this.isPlayerLoading = false
       this.currQuality = this.player.getQuality()
+      this.player.setMuted(false)
     })
 
     this.__checkFollowChannel()
@@ -139,10 +140,6 @@ export default {
     __showControls() {
       if (!this.isShowControls) {
         this.isShowControls = true
-        const timeout = setTimeout(() => {
-          this.isShowControls = false
-        }, 3000)
-        clearTimeout(timeout)
       } else {
         this.isShowControls = false
       }
