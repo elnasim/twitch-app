@@ -2,23 +2,23 @@
   <div class="stream">
     <div ref="playerWrapper" class="player-wrapper">
       <div
-        @dblclick="changePlayerSize()"
-        @click="closeQualities(), __showControls()"
+        @dblclick="__changePlayerSize()"
+        @click="__closeQualities(), __showControls()"
         class="player__controls-wrap"
       >
         <div :class="{ active: isShowControls }" class="player__controls">
-          <div @click.stop="_back()" class="player__back">
+          <div @click.stop="__back()" class="player__back">
             <i class="fas fa-arrow-left"></i>
           </div>
 
           <div
-            @click.stop="_unFollow()"
+            @click.stop="__unFollow()"
             v-if="isFollowed"
             class="player__follow"
           >
             <i class="fas fa-heart"></i>
           </div>
-          <div @click.stop="_follow()" v-else class="player__unfollow">
+          <div @click.stop="__follow()" v-else class="player__unfollow">
             <i class="far fa-heart"></i>
           </div>
 
@@ -40,7 +40,7 @@
               </div>
             </div>
 
-            <div @click.stop="showQualities()" class="player__change-quality">
+            <div @click.stop="__showQualities()" class="player__change-quality">
               <i class="fas fa-cog"></i>
             </div>
           </div>
@@ -58,7 +58,7 @@
       <QualityChange
         :qualities="qualities"
         :isShow="showQualityChange"
-        :changeQuality="changeQuality"
+        :changeQuality="__changeQuality"
         :currQuality="currQuality"
       />
     </div>
@@ -116,24 +116,24 @@ export default {
     this.__checkFollowChannel()
   },
   methods: {
-    showQualities() {
+    __showQualities() {
       this.showQualityChange = true
     },
 
-    closeQualities() {
+    __closeQualities() {
       this.showQualityChange = false
     },
 
-    changeQuality(q) {
+    __changeQuality(q) {
       this.player.setQuality(q)
       this.showQualityChange = false
     },
 
-    changePlayerSize() {
+    __changePlayerSize() {
       this.isPlayerFull = !this.isPlayerFull
     },
 
-    _back() {
+    __back() {
       this.$router.back()
     },
 
@@ -145,7 +145,7 @@ export default {
       }
     },
 
-    async _follow() {
+    async __follow() {
       const userID = this.$store.state.auth.userID
       const data = await this.$store.dispatch('favorites/followChannel', [
         userID,
@@ -156,7 +156,7 @@ export default {
       }
     },
 
-    async _unFollow() {
+    async __unFollow() {
       const res = confirm('Вы уверены, что хотите отписаться?')
 
       if (res) {
