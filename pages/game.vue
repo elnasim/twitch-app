@@ -53,7 +53,8 @@ export default {
     language: '',
     streams: null,
     paginationID: null,
-    scrollLoadingData: null
+    scrollLoadingData: null,
+    cachedData: null
   }),
   watch: {},
   beforeRouteUpdate(to, from, next) {
