@@ -109,7 +109,7 @@ export default {
       }
 
       this.streams = data.data
-      this.paginationID = 25
+      this.paginationID = data.pagination.cursor
       this.isLoading = false
     },
 
@@ -126,18 +126,18 @@ export default {
 
       if (this.language === 'all') {
         data = await this.$axios.$get(
-          `https://api.twitch.tv/kraken/streams/?game=${this.title}&offset=${this.paginationID}`,
+          `https://api.twitch.tv/helix/streams/?game_id=${this.id}&after=${this.paginationID}`,
           config
         )
       } else {
         data = await this.$axios.$get(
-          `https://api.twitch.tv/kraken/streams/?game=${this.title}&offset=${this.paginationID}&language=${this.language}`,
+          `https://api.twitch.tv/helix/streams/?game_id=${this.id}&language=${this.language}&after=${this.paginationID}`,
           config
         )
       }
 
-      this.streams = this.streams.concat(data.streams)
-      this.paginationID = this.paginationID + 25
+      this.streams = this.streams.concat(data.data)
+      this.paginationID = data.pagination.cursor
       this.isLoading = false
     }
   }
