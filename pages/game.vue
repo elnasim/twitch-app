@@ -15,7 +15,7 @@
       >
         Показать трансляции на всех языках
       </nuxt-link>
-      <Stream
+      <!-- <Stream
         v-for="item of streams"
         :key="item._id"
         :preview="item.preview.large"
@@ -24,6 +24,16 @@
         :viewers="item.viewers"
         :logo="item.channel.logo"
         :channelId="item.channel._id"
+      /> -->
+      <Stream
+        v-for="item of streams"
+        :key="item.id"
+        :preview="item.thumbnail_url"
+        :userName="item.user_name"
+        :title="item.title"
+        :viewers="item.viewer_count"
+        :channelId="item.user_id"
+        :channelLang="item.language"
       />
     </div>
     <Loading v-if="isLoading" />
@@ -39,6 +49,7 @@ export default {
   data: () => ({
     isLoading: false,
     title: '',
+    id: '',
     language: '',
     streams: null,
     paginationID: null,
@@ -53,6 +64,7 @@ export default {
   mounted() {
     this.title = this.$route.query.title
     this.language = this.$route.query.lang
+    this.id = this.$route.query.id
 
     this.__getStreams()
 
@@ -86,17 +98,17 @@ export default {
 
       if (this.language === 'all') {
         data = await this.$axios.$get(
-          `https://api.twitch.tv/kraken/streams/?game=${this.title}`,
+          `https://api.twitch.tv/helix/streams/?game_id=${this.id}`,
           config
         )
       } else {
         data = await this.$axios.$get(
-          `https://api.twitch.tv/kraken/streams/?game=${this.title}&language=${this.language}`,
+          `https://api.twitch.tv/helix/streams/?game_id=${this.id}&language=${this.language}`,
           config
         )
       }
 
-      this.streams = data.streams
+      this.streams = data.data
       this.paginationID = 25
       this.isLoading = false
     },

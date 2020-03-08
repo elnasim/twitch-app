@@ -4,16 +4,18 @@
       :to="`/stream?channel=${userName}&id=${channelId}`"
       class="stream"
     >
-      <div :style="`background-image: url(${preview})`" class="stream__preview">
+      <div :style="`background-image: url(${_img})`" class="stream__preview">
         <div class="stream__viewers">
           <span class="stream__viewers-round"></span>
           {{ viewers }} зрителей
         </div>
       </div>
       <div class="stream__info">
-        <img :src="logo" class="stream__logo" />
+        <!-- <img :src="logo" class="stream__logo" /> -->
         <div class="stream__info-row">
-          <div class="stream__profile-name">{{ userName }}</div>
+          <div class="stream__profile-name">
+            [{{ channelLang }}] {{ userName }}
+          </div>
           <div class="stream__title">{{ title }}</div>
         </div>
       </div>
@@ -45,8 +47,18 @@ export default {
       default: ''
     },
     channelId: {
-      type: Number,
+      type: String,
       default: null
+    },
+    channelLang: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    _img() {
+      const str = this.preview.slice(0, -20)
+      return `${str}300x200.jpg`
     }
   }
 }
