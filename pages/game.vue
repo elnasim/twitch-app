@@ -3,14 +3,14 @@
     <div class="game-page">
       <nuxt-link
         v-if="language === 'all'"
-        :to="`/game?title=${title}&lang=ru`"
+        :to="`/game?title=${title}&id=${id}&lang=ru`"
         class="language-filter"
       >
         Показать трансляции на русском
       </nuxt-link>
       <nuxt-link
         v-if="language === 'ru'"
-        :to="`/game?title=${title}&lang=all`"
+        :to="`/game?title=${title}&id=${id}&lang=all`"
         class="language-filter"
       >
         Показать трансляции на всех языках
