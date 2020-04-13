@@ -49,7 +49,6 @@ export default {
         )
 
         this.data = data.games
-        console.log('-->', data.games)
       } catch (error) {}
     }
   }
@@ -93,6 +92,7 @@ export default {
 }
 
 .col {
-  width: 50%;
+  width: 25%;
+  padding: 0 10px;
 }
 </style>
