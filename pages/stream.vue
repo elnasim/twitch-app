@@ -208,6 +208,10 @@ export default {
 .player-wrapper {
   position: relative;
   flex: 1;
+
+  @media (max-width: 767px) {
+    height: 300px;
+  }
 }
 
 .player {
@@ -310,6 +314,7 @@ export default {
   align-items: flex-start;
   flex-wrap: wrap;
   z-index: 5;
+  user-select: none;
 }
 
 .stream__info-logo-col {

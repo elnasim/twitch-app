@@ -29,5 +29,10 @@ export default {
 <style lang="scss" scoped>
 .chat {
   width: 30%;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 1000px;
+  }
 }
 </style>
