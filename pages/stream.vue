@@ -200,18 +200,13 @@ export default {
 <style lang="scss" scoped>
 .stream {
   display: flex;
-  flex-wrap: wrap;
-  height: 100%;
   position: relative;
+  height: 100vh;
 }
 
 .player-wrapper {
   position: relative;
   flex: 1;
-
-  @media (max-width: 991px) {
-    height: 100%;
-  }
 }
 
 .player {
