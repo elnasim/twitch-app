@@ -96,15 +96,20 @@ export default {
 .games {
   display: flex;
   flex-wrap: wrap;
+  padding: 20px 10px;
 }
 
 .col {
-  width: 33.33%;
-  @media (max-width: 991px) {
-    width: 50%;
+  width: 20%;
+  padding: 0 10px;
+  @media (max-width: 1199px) {
+    width: 25%;
   }
-  @media (max-width: 575px) {
-    width: 100%;
+  @media (max-width: 991px) {
+    width: 33.33%;
+  }
+  @media (max-width: 767px) {
+    width: 50%;
   }
 }
 </style>

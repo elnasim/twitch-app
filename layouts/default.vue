@@ -1,21 +1,18 @@
 <template>
   <div class="layout-default">
-    <Header />
+    <Nav />
     <div class="content">
       <nuxt />
     </div>
-    <Nav />
   </div>
 </template>
 
 <script>
 import Nav from '~/components/app/Nav'
-import Header from '~/components/app/Header'
 
 export default {
   components: {
-    Nav,
-    Header
+    Nav
   },
   mounted() {
     this.$store.dispatch('auth/validateAuth')
@@ -26,12 +23,20 @@ export default {
 <style lang="scss" scoped>
 .layout-default {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: 50px;
+  flex-direction: row;
+  height: 100vh;
+
+  @media (max-width: 767px) {
+    flex-direction: column-reverse;
+  }
 }
 
 .content {
-  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+
+  @media (max-width: 767px) {
+    flex: 1;
+  }
 }
 </style>

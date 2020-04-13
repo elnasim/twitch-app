@@ -1,26 +1,37 @@
 <template>
-  <div class="col">
-    <nuxt-link
-      :to="`/stream?channel=${userName}&id=${channelId}`"
-      class="stream"
+  <nuxt-link :to="`/stream?channel=${userName}&id=${channelId}`" class="stream">
+    <div
+      v-if="apiType === 'helix'"
+      :style="`background-image: url(${_img})`"
+      class="stream__preview"
     >
-      <div :style="`background-image: url(${_img})`" class="stream__preview">
-        <div class="stream__viewers">
-          <span class="stream__viewers-round"></span>
-          {{ viewers }} зрителей
-        </div>
+      <div class="stream__viewers">
+        <span class="stream__viewers-round"></span>
+        {{ viewers }} зрителей
       </div>
-      <div class="stream__info">
-        <!-- <img :src="logo" class="stream__logo" /> -->
-        <div class="stream__info-row">
-          <div class="stream__profile-name">
-            [{{ channelLang }}] {{ userName }}
-          </div>
-          <div class="stream__title">{{ title }}</div>
-        </div>
+    </div>
+
+    <div
+      v-if="apiType === 'kraken'"
+      :style="`background-image: url(${preview})`"
+      class="stream__preview"
+    >
+      <div class="stream__viewers">
+        <span class="stream__viewers-round"></span>
+        {{ viewers }} зрителей
       </div>
-    </nuxt-link>
-  </div>
+    </div>
+
+    <div class="stream__info">
+      <!-- <img :src="logo" class="stream__logo" /> -->
+      <div class="stream__info-row">
+        <div class="stream__profile-name">
+          [{{ channelLang }}] {{ userName }}
+        </div>
+        <div class="stream__title">{{ title }}</div>
+      </div>
+    </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -53,28 +64,22 @@ export default {
     channelLang: {
       type: String,
       default: ''
+    },
+    apiType: {
+      type: String,
+      default: ''
     }
   },
   computed: {
     _img() {
       const str = this.preview.slice(0, -20)
-      return `${str}300x200.jpg`
+      return `${str}600x400.jpg`
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.col {
-  width: 33.33%;
-  @media (max-width: 991px) {
-    width: 50%;
-  }
-  @media (max-width: 575px) {
-    width: 100%;
-  }
-}
-
 .stream {
   display: flex;
   flex-direction: column;
@@ -83,7 +88,11 @@ export default {
 
 .stream__info {
   display: flex;
-  padding: 10px;
+  padding: 10px 0;
+}
+
+.stream__info-row {
+  overflow: hidden;
 }
 
 .stream__logo {
@@ -96,10 +105,16 @@ export default {
 
 .stream__profile-name {
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stream__title {
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stream__preview {

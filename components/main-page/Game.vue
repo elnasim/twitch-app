@@ -1,9 +1,15 @@
 <template>
-  <nuxt-link :to="`/game?title=${title}&id=${id}&lang=all`" class="game">
-    <div :style="`background-image: url(${img})`" class="game__img"></div>
+  <nuxt-link
+    :to="`/game?title=${title}&id=${id}&lang=all`"
+    :style="`background-image: url(${img})`"
+    class="game"
+  >
     <div class="game__info">
       <div class="game__title">{{ title }}</div>
-      <div v-if="viewers" class="game__viewers">{{ viewers }} зрителей</div>
+      <div v-if="viewers" class="game__viewers">
+        <span class="game__round-viewers"></span>
+        {{ viewers }}
+      </div>
     </div>
   </nuxt-link>
 </template>
@@ -40,16 +46,14 @@ export default {
 <style lang="scss" scoped>
 .game {
   display: flex;
-  border-bottom: 1px solid rgba(#fff, 0.5);
-  height: 200px;
-}
-
-.game__img {
+  margin-bottom: 20px;
   background-size: cover;
   background-position: center;
-  width: 40%;
-  display: block;
+  width: 100%;
+  display: flex;
   overflow: hidden;
+  flex-direction: column;
+  border-radius: 4px;
   &::before {
     content: '';
     float: left;
@@ -58,15 +62,26 @@ export default {
 }
 
 .game__info {
-  padding: 20px;
-  flex: 1;
+  background-color: #191919;
+  padding: 10px;
 }
 
 .game__title {
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .game__viewers {
   color: rgba(#fff, 0.7);
+}
+
+.game__round-viewers {
+  background-color: red;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  display: inline-block;
 }
 </style>

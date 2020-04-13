@@ -25,16 +25,19 @@
         :logo="item.channel.logo"
         :channelId="item.channel._id"
       /> -->
-      <Stream
-        v-for="item of streams"
-        :key="item.id"
-        :preview="item.thumbnail_url"
-        :userName="item.user_name"
-        :title="item.title"
-        :viewers="item.viewer_count"
-        :channelId="item.user_id"
-        :channelLang="item.language"
-      />
+      <div class="row-stream-page">
+        <div class="col-stream-page" v-for="item of streams" :key="item.id">
+          <Stream
+            :preview="item.thumbnail_url"
+            :userName="item.user_name"
+            :title="item.title"
+            :viewers="item.viewer_count"
+            :channelId="item.user_id"
+            :channelLang="item.language"
+            :apiType="'helix'"
+          />
+        </div>
+      </div>
     </div>
     <Loading v-if="isLoading" />
   </div>
@@ -160,5 +163,24 @@ export default {
   cursor: pointer;
   text-transform: uppercase;
   padding: 10px;
+}
+
+.row-stream-page {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.col-stream-page {
+  width: 33.33%;
+  padding: 0 10px;
+
+  @media (max-width: 767px) {
+    width: 50%;
+  }
+
+  @media (max-width: 479px) {
+    width: 100%;
+  }
 }
 </style>

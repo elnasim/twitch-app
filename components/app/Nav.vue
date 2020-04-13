@@ -1,5 +1,35 @@
 <template>
   <nav class="nav">
+    <nuxt-link to="/search" class="nav__link_search nav__link">
+      <svg
+        id="Capa_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        version="1.1"
+        x="0px"
+        y="0px"
+        viewBox="0 0 511.999 511.999"
+        style="enable-background:new 0 0 511.999 511.999;"
+        xml:space="preserve"
+        width="512px"
+        height="512px"
+        class=""
+      >
+        <g>
+          <g>
+            <g>
+              <path
+                d="M508.874,478.708L360.142,329.976c28.21-34.827,45.191-79.103,45.191-127.309c0-111.75-90.917-202.667-202.667-202.667    S0,90.917,0,202.667s90.917,202.667,202.667,202.667c48.206,0,92.482-16.982,127.309-45.191l148.732,148.732    c4.167,4.165,10.919,4.165,15.086,0l15.081-15.082C513.04,489.627,513.04,482.873,508.874,478.708z M202.667,362.667    c-88.229,0-160-71.771-160-160s71.771-160,160-160s160,71.771,160,160S290.896,362.667,202.667,362.667z"
+                data-original="#000000"
+                class="active-path"
+                data-old_color="#000000"
+                fill="#FFFFFF"
+              />
+            </g>
+          </g>
+        </g>
+      </svg>
+    </nuxt-link>
     <nuxt-link to="/" class="nav__link">Игры</nuxt-link>
     <nuxt-link to="/favorites" class="nav__link">Подписки</nuxt-link>
     <nuxt-link to="/settings" class="nav__link">Настройки</nuxt-link>
@@ -12,27 +42,45 @@ export default {}
 
 <style lang="scss">
 .nav {
-  background-color: #000;
+  background-color: #a30f2c;
   display: flex;
-  justify-content: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  flex-direction: column;
+  padding: 40px 0;
+  width: 200px;
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+    width: 100%;
+  }
 }
 
 .nav__link {
   color: #ffffff;
   display: block;
-  width: 140px;
-  height: 50px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px;
   &.nuxt-link-exact-active {
     background-color: #fff;
     color: #000000;
+  }
+}
+
+.nav__link_search {
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+  &.nuxt-link-exact-active {
+    svg {
+      path {
+        fill: #000;
+      }
+    }
   }
 }
 </style>
