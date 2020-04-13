@@ -14,14 +14,14 @@ export const mutations = {
 }
 
 export const actions = {
-  auth() {
-    window.location.href =
-      'https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=z97pdq1cei4wqu42l3kkkdnseq06bj&redirect_uri=http://localhost:3000&scope=user_follows_edit'
-  },
   // auth() {
   //   window.location.href =
-  //     'https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=z97pdq1cei4wqu42l3kkkdnseq06bj&redirect_uri=https://movie-dvd-release.github.io&scope=user_follows_edit'
+  //     'https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=z97pdq1cei4wqu42l3kkkdnseq06bj&redirect_uri=http://localhost:3000&scope=user_follows_edit'
   // },
+  auth() {
+    window.location.href =
+      'https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=z97pdq1cei4wqu42l3kkkdnseq06bj&redirect_uri=https://movie-dvd-release.github.io&scope=user_follows_edit'
+  },
 
   setToken({ commit }, payload) {
     const token = payload.slice(14, 44)

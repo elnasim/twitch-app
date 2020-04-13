@@ -26,7 +26,7 @@
         :channelId="item.channel._id"
       /> -->
       <div class="row-stream-page">
-        <div class="col-stream-page" v-for="item of streams" :key="item.id">
+        <div v-for="item of streams" :key="item.id" class="col-stream-page">
           <Stream
             :preview="item.thumbnail_url"
             :userName="item.user_name"
@@ -74,6 +74,7 @@ export default {
 
     this.scrollLoadingData = () => {
       const bodyHeight = document.body.clientHeight
+      console.log('-->', bodyHeight)
       const yOffset = window.pageYOffset
       const windowHeight = window.innerHeight
       const y = yOffset + windowHeight

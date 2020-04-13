@@ -30,7 +30,7 @@ export default {
 .chat {
   width: 30%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     width: 100%;
     height: 1000px;
   }

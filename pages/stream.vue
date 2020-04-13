@@ -209,8 +209,8 @@ export default {
   position: relative;
   flex: 1;
 
-  @media (max-width: 767px) {
-    height: 300px;
+  @media (max-width: 991px) {
+    height: 100%;
   }
 }
 
