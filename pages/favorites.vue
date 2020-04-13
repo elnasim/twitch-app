@@ -14,6 +14,7 @@
         :viewers="item.viewers"
         :logo="item.channel.logo"
         :channelId="item.channel._id"
+        :game="item.game"
       />
     </div>
   </div>

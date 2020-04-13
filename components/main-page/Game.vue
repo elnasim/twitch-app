@@ -1,14 +1,11 @@
 <template>
-  <div class="col">
-    <nuxt-link :to="`/game?title=${title}&id=${id}&lang=all`" class="game">
-      <!-- <img :src="`${img}`" alt="" class="game__img" /> -->
-      <div :style="`background-image: url(${img})`" class="game__img"></div>
-      <div class="game__info">
-        <div class="game__title">{{ title }}</div>
-        <div class="game__viewers">{{ viewers }} зрителей</div>
-      </div>
-    </nuxt-link>
-  </div>
+  <nuxt-link :to="`/game?title=${title}&id=${id}&lang=all`" class="game">
+    <div :style="`background-image: url(${img})`" class="game__img"></div>
+    <div class="game__info">
+      <div class="game__title">{{ title }}</div>
+      <div v-if="viewers" class="game__viewers">{{ viewers }} зрителей</div>
+    </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -41,16 +38,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.col {
-  width: 33.33%;
-  @media (max-width: 991px) {
-    width: 50%;
-  }
-  @media (max-width: 575px) {
-    width: 100%;
-  }
-}
-
 .game {
   display: flex;
   border-bottom: 1px solid rgba(#fff, 0.5);

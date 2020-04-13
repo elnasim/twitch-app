@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="games">
-      <Game
-        v-for="item of games"
-        :key="item.game._id"
-        :img="item.game.box.large"
-        :title="item.game.name"
-        :id="item.game._id"
-        :viewers="item.viewers"
-      />
+      <div v-for="item of games" :key="item.game._id" class="col">
+        <Game
+          :img="item.game.box.large"
+          :title="item.game.name"
+          :id="item.game._id"
+          :viewers="item.viewers"
+        />
+      </div>
     </div>
     <Loading v-if="isLoading" />
   </div>
@@ -96,5 +96,15 @@ export default {
 .games {
   display: flex;
   flex-wrap: wrap;
+}
+
+.col {
+  width: 33.33%;
+  @media (max-width: 991px) {
+    width: 50%;
+  }
+  @media (max-width: 575px) {
+    width: 100%;
+  }
 }
 </style>

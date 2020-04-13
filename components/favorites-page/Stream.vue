@@ -8,9 +8,13 @@
         <div class="stream__viewers">{{ viewers }} зрителей</div>
       </div>
       <div class="stream__info">
-        <img :src="logo" class="stream__logo" />
+        <div
+          :style="`background-image: url(${logo})`"
+          class="stream__logo"
+        ></div>
         <div class="stream__info-row">
           <div class="stream__profile-name">{{ userName }}</div>
+          <div class="stream__profile-name">{{ game }}</div>
           <div class="stream__title">{{ title }}</div>
         </div>
       </div>
@@ -44,6 +48,10 @@ export default {
     channelId: {
       type: Number,
       default: null
+    },
+    game: {
+      type: String,
+      default: ''
     }
   }
 }
@@ -66,8 +74,12 @@ export default {
 }
 
 .stream__logo {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 100%;
+  margin-right: 10px;
 }
 
 .stream__profile-name {
