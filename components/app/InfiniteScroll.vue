@@ -4,16 +4,21 @@
 
 <script>
 export default {
+  // eslint-disable-next-line
+  props: ['el'],
   mounted() {
     const options = {
-      root: document.querySelector('.game-page'),
+      root: this.el,
       rootMargin: '0px',
       threshold: 1.0
     }
 
-    const observer = new IntersectionObserver(this.__callback, options)
-    const target = this.$refs.infiniteScroll
-    observer.observe(target)
+    window.addEventListener('scroll', function() {
+      console.log('--->', 123)
+      const observer = new IntersectionObserver(this.__callback, options)
+      const target = this.$refs.infiniteScroll
+      observer.observe(target)
+    })
   },
   methods: {
     __callback(entries, observer) {
@@ -25,4 +30,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.infiniteScroll {
+  color: #ffffff;
+}
+</style>

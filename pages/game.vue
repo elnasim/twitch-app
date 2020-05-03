@@ -31,16 +31,17 @@
     </div>
     <Loading v-if="isLoading" />
 
-    <a @click.prevent="__moreStreams" href="#">Загрузить еще</a>
+    <Loadmore :loadMore="__moreStreams" v-if="!isLoading" />
   </div>
 </template>
 
 <script>
 import Stream from '@/components/game-page/Stream'
 import Loading from '@/components/app/Loading'
+import Loadmore from '@/components/app/LoadMore'
 
 export default {
-  components: { Stream, Loading },
+  components: { Stream, Loading, Loadmore },
   data: () => ({
     isLoading: false,
     title: '',
@@ -67,25 +68,25 @@ export default {
   },
 
   methods: {
-    __getStreams() {
+    async __getStreams() {
       this.isLoading = true
       const payload = {
         id: this.id,
         game: this.title,
         lang: this.language
       }
-      this.$store.dispatch('game/getStreams', payload)
+      await this.$store.dispatch('game/getStreams', payload)
       this.isLoading = false
     },
 
-    __moreStreams() {
+    async __moreStreams() {
       this.isLoading = true
       const payload = {
         id: this.id,
         game: this.title,
         lang: this.language
       }
-      this.$store.dispatch('game/moreStreams', payload)
+      await this.$store.dispatch('game/moreStreams', payload)
       this.isLoading = false
     }
   }
