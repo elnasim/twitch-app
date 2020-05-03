@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="games">
-      <div v-for="item of games" :key="item.game._id" class="col">
+      <div v-for="item of _games" :key="item.game._id" class="col">
         <Game
           :img="item.game.box.large"
           :title="item.game.name"
@@ -11,81 +11,44 @@
       </div>
     </div>
     <Loading v-if="isLoading" />
+
+    <LoadMore :loadMore="__moreGames" v-if="!isLoading" />
   </div>
 </template>
 
 <script>
-import Game from '~/components/main-page/Game'
-import Loading from '~/components/app/Loading'
+import Game from '@/components/main-page/Game'
+import Loading from '@/components/app/Loading'
+import LoadMore from '@/components/app/LoadMore'
 
 export default {
-  components: { Game, Loading },
+  components: { Game, Loading, LoadMore },
   data: () => ({
-    isLoading: false,
-    games: null,
-    paginationId: null,
-    scrollLoadingData: null
+    isLoading: false
   }),
+  computed: {
+    _games() {
+      return this.$store.state.main.data
+    }
+  },
   mounted() {
     // перенаправление на главную при получении токена атворизации
     if (this.$route.hash) {
       this.$store.dispatch('auth/setToken', this.$route.hash)
       this.$router.push('/')
     }
-
     this.__getGames()
-
-    this.scrollLoadingData = () => {
-      const bodyHeight = document.body.clientHeight
-      const yOffset = window.pageYOffset
-      const windowHeight = window.innerHeight
-      const y = yOffset + windowHeight
-      if (y >= bodyHeight - 150 && !this.isLoading) {
-        this.__moreGames()
-      }
-    }
-
-    window.addEventListener('scroll', this.scrollLoadingData)
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.scrollLoadingData)
   },
   methods: {
     async __moreGames() {
       this.isLoading = true
-      const config = {
-        headers: {
-          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
-          accept: 'application/vnd.twitchtv.v5+json'
-        }
-      }
-      const data = await this.$axios.$get(
-        `https://api.twitch.tv/kraken/games/top?offset=${this.paginationId}`,
-        config
-      )
-
-      this.games = this.games.concat(data.top)
-      this.paginationId = this.paginationId + 10
+      await this.$store.dispatch('main/moreGames')
       this.isLoading = false
     },
 
     async __getGames() {
       this.isLoading = true
-
-      const config = {
-        headers: {
-          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
-          accept: 'application/vnd.twitchtv.v5+json'
-        }
-      }
-
-      const data = await this.$axios.$get(
-        'https://api.twitch.tv/kraken/games/top',
-        config
-      )
-
-      this.paginationId = 10
-      this.games = data.top
+      await this.$store.dispatch('main/getGames')
       this.isLoading = false
     }
   }

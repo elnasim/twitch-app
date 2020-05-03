@@ -11,6 +11,14 @@ function config(token = '') {
   }
 }
 
+export async function games(pagination = 0) {
+  const data = await axios.get(
+    `https://api.twitch.tv/kraken/games/top?offset=${pagination}`,
+    config()
+  )
+  return data
+}
+
 export async function streams(id, lang, pagination = '') {
   let data
   if (lang === 'all') {
