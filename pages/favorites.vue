@@ -5,7 +5,11 @@
     </nuxt-link>
 
     <div v-else-if="_isAuth === true" class="favorites-page-row">
-      <div v-for="item of favorites" :key="item._id" class="favorites-page-col">
+      <div
+        v-for="item of _favorites"
+        :key="item._id"
+        class="favorites-page-col"
+      >
         <Stream
           :preview="item.preview.large"
           :userName="item.channel.display_name"
@@ -25,36 +29,21 @@ import Stream from '~/components/game-page/Stream'
 
 export default {
   components: { Stream },
-  data: () => ({
-    favorites: null
-  }),
   computed: {
     _isAuth() {
       return this.$store.state.auth.isAuth
+    },
+
+    _favorites() {
+      return this.$store.state.favorites.favorites
     }
   },
   mounted() {
     this.__getFavorites()
   },
   methods: {
-    async __getFavorites() {
-      const config = {
-        headers: {
-          accept: 'application/vnd.twitchtv.v5+json',
-          Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
-        }
-      }
-
-      if (localStorage.getItem('myTwitchToken')) {
-        try {
-          const data = await this.$axios.$get(
-            `https://api.twitch.tv/kraken/streams/followed`,
-            config
-          )
-
-          this.favorites = data.streams
-        } catch (error) {}
-      }
+    __getFavorites() {
+      this.$store.dispatch('favorites/getFavorites')
     }
   }
 }
