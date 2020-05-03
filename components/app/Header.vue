@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header__logo">Twitch</div>
-    <nuxt-link to="/search" class="header__search">Search</nuxt-link>
+    <nuxt-link to="/search-game" class="header__search">Search</nuxt-link>
   </header>
 </template>
 

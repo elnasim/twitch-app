@@ -1,6 +1,6 @@
 <template>
   <nav class="nav">
-    <nuxt-link to="/search" class="nav__link_search nav__link">
+    <nuxt-link to="/search-game" class="nav__link_search nav__link">
       <svg
         id="Capa_1"
         xmlns="http://www.w3.org/2000/svg"

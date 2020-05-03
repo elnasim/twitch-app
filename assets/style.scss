@@ -29,3 +29,17 @@ body {
 .page-leave-to {
   opacity: 0;
 }
+
+.container {
+  padding: 0 10px;
+}
+
+.row {
+  margin: 0 -10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col {
+  padding: 0 10px;
+}

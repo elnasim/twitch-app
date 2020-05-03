@@ -1,23 +1,24 @@
 <template>
   <div class="search-page">
     <div class="search-top">
-      <nuxt-link to="/search/games" class="search-top__link">
-        Поиск стримеров
+      <nuxt-link to="/search-game" class="search-top__link">
+        Поиск игр
       </nuxt-link>
     </div>
 
-    <form @submit.prevent="onSearch" class="search-form">
-      <input v-model="input" type="text" class="search-form__input" />
-      <button class="search-form__btn">Поиск</button>
-    </form>
+    <div class="search-form-wrapper">
+      <form @submit.prevent="onSearch" class="search-form">
+        <input v-model="input" type="text" class="search-form__input" />
+        <button class="search-form__btn">Поиск</button>
+      </form>
+    </div>
 
     <div v-if="data" class="search-page__row">
       <div v-for="item of data" :key="item._id" class="col">
-        <Game
-          :img="item.box.large"
-          :title="item.name"
-          :id="item._id"
-          :viewers="item.popularity"
+        <StreamerPreview
+          :img="item.logo"
+          :title="item.display_name"
+          :id="+item._id"
         />
       </div>
     </div>
@@ -25,10 +26,10 @@
 </template>
 
 <script>
-import Game from '~/components/main-page/Game'
+import StreamerPreview from '~/components/search-page/StreamerPreview'
 
 export default {
-  components: { Game },
+  components: { StreamerPreview },
   data: () => ({
     input: '',
     data: ''
@@ -44,11 +45,11 @@ export default {
 
       try {
         const data = await this.$axios.$get(
-          `https://api.twitch.tv/kraken/search/games?query=${this.input}`,
+          `https://api.twitch.tv/kraken/users?login=${this.input}`,
           config
         )
 
-        this.data = data.games
+        this.data = data.users
       } catch (error) {}
     }
   }
@@ -68,9 +69,14 @@ export default {
   padding: 10px;
 }
 
+.search-form-wrapper {
+  padding: 0 10px;
+}
+
 .search-form {
   display: flex;
   align-items: stretch;
+  margin-bottom: 20px;
 }
 
 .search-form__input {
@@ -78,12 +84,16 @@ export default {
   background-color: #fff;
   padding: 10px;
   flex: 1;
+  font-size: 20px;
 }
 
 .search-form__btn {
   width: 150px;
   border: none;
   cursor: pointer;
+  background-color: #a30f2c;
+  color: #ffffff;
+  font-size: 20px;
 }
 
 .search-page__row {
