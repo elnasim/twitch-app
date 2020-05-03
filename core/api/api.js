@@ -1,7 +1,7 @@
 import { clientID } from '@/config'
 import axios from 'axios'
 
-function config(token) {
+function config(token = '') {
   return {
     headers: {
       accept: 'application/vnd.twitchtv.v5+json',
@@ -9,6 +9,31 @@ function config(token) {
       'Client-ID': clientID
     }
   }
+}
+
+export async function streams(id, lang, pagination = '') {
+  let data
+  if (lang === 'all') {
+    data = await axios.get(
+      `https://api.twitch.tv/helix/streams/?game_id=${id}&after=${pagination}`,
+      config()
+    )
+  } else {
+    data = await axios.get(
+      `https://api.twitch.tv/helix/streams/?game_id=${id}&language=${lang}&after=${pagination}`,
+      config()
+    )
+  }
+  return data
+}
+
+export async function favorites(token) {
+  const data = await axios.get(
+    `https://api.twitch.tv/kraken/streams/followed`,
+    config(token)
+  )
+
+  return data
 }
 
 export async function streamerData(streamerName, token = '') {

@@ -15,18 +15,8 @@
       >
         Показать трансляции на всех языках
       </nuxt-link>
-      <!-- <Stream
-        v-for="item of streams"
-        :key="item._id"
-        :preview="item.preview.large"
-        :title="item.channel.status"
-        :userName="item.channel.name"
-        :viewers="item.viewers"
-        :logo="item.channel.logo"
-        :channelId="item.channel._id"
-      /> -->
       <div class="row-stream-page">
-        <div v-for="item of streams" :key="item.id" class="col-stream-page">
+        <div v-for="item of _streams" :key="item.id" class="col-stream-page">
           <Stream
             :preview="item.thumbnail_url"
             :userName="item.user_name"
@@ -40,12 +30,14 @@
       </div>
     </div>
     <Loading v-if="isLoading" />
+
+    <a @click.prevent="__moreStreams" href="#">Загрузить еще</a>
   </div>
 </template>
 
 <script>
-import Stream from '~/components/game-page/Stream'
-import Loading from '~/components/app/Loading'
+import Stream from '@/components/game-page/Stream'
+import Loading from '@/components/app/Loading'
 
 export default {
   components: { Stream, Loading },
@@ -53,13 +45,14 @@ export default {
     isLoading: false,
     title: '',
     id: '',
-    language: '',
-    streams: null,
-    paginationID: null,
-    scrollLoadingData: null,
-    cachedData: null
+    language: ''
   }),
-  watch: {},
+  computed: {
+    _streams() {
+      if (this.$store.state.game.data) return this.$store.state.game.data
+      return []
+    }
+  },
   beforeRouteUpdate(to, from, next) {
     next()
     this.language = this.$route.query.lang
@@ -71,78 +64,28 @@ export default {
     this.id = this.$route.query.id
 
     this.__getStreams()
-
-    this.scrollLoadingData = () => {
-      const bodyHeight = document.body.clientHeight
-      console.log('-->', bodyHeight)
-      const yOffset = window.pageYOffset
-      const windowHeight = window.innerHeight
-      const y = yOffset + windowHeight
-      if (y >= bodyHeight - 150 && !this.isLoading) {
-        this.__moreStreams()
-      }
-    }
-
-    window.addEventListener('scroll', this.scrollLoadingData)
   },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.scrollLoadingData)
-  },
+
   methods: {
-    async __getStreams() {
+    __getStreams() {
       this.isLoading = true
-      this.streams = null
-      const config = {
-        headers: {
-          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
-          accept: 'application/vnd.twitchtv.v5+json'
-        }
+      const payload = {
+        id: this.id,
+        game: this.title,
+        lang: this.language
       }
-
-      let data
-
-      if (this.language === 'all') {
-        data = await this.$axios.$get(
-          `https://api.twitch.tv/helix/streams/?game_id=${this.id}`,
-          config
-        )
-      } else {
-        data = await this.$axios.$get(
-          `https://api.twitch.tv/helix/streams/?game_id=${this.id}&language=${this.language}`,
-          config
-        )
-      }
-
-      this.streams = data.data
-      this.paginationID = data.pagination.cursor
+      this.$store.dispatch('game/getStreams', payload)
       this.isLoading = false
     },
 
-    async __moreStreams() {
+    __moreStreams() {
       this.isLoading = true
-      const config = {
-        headers: {
-          'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj',
-          accept: 'application/vnd.twitchtv.v5+json'
-        }
+      const payload = {
+        id: this.id,
+        game: this.title,
+        lang: this.language
       }
-
-      let data
-
-      if (this.language === 'all') {
-        data = await this.$axios.$get(
-          `https://api.twitch.tv/helix/streams/?game_id=${this.id}&after=${this.paginationID}`,
-          config
-        )
-      } else {
-        data = await this.$axios.$get(
-          `https://api.twitch.tv/helix/streams/?game_id=${this.id}&language=${this.language}&after=${this.paginationID}`,
-          config
-        )
-      }
-
-      this.streams = this.streams.concat(data.data)
-      this.paginationID = data.pagination.cursor
+      this.$store.dispatch('game/moreStreams', payload)
       this.isLoading = false
     }
   }
