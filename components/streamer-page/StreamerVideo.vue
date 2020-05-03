@@ -1,8 +1,9 @@
 <template>
   <div class="streamer-page__col-videos col">
-    <nuxt-link
-      :to="`/vod?id=${id}`"
+    <a
+      :href="`https://www.twitch.tv/videos/${id}`"
       class="video-streamer-page streamer-page__video"
+      target="_blank"
     >
       <div
         :style="`background-image:url(${_preview})`"
@@ -19,7 +20,7 @@
 
         <div class="video-streamer-page__views">Просмотры: {{ views }}</div>
       </div>
-    </nuxt-link>
+    </a>
   </div>
 </template>
 
