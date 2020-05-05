@@ -15,7 +15,10 @@ export default {
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    script: [{ src: 'https://player.twitch.tv/js/embed/v1.js' }]
+    script: [
+      { src: 'https://player.twitch.tv/js/embed/v1.js' },
+      { src: 'https://embed.twitch.tv/embed/v1.js' }
+    ]
   },
   /*
    ** Customize the progress-bar color
