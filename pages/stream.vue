@@ -1,18 +1,22 @@
 <template>
   <div class="stream">
-    <Player :userName="userName" :streamerID="streamerID" />
+    <Player
+      :userName="userName"
+      :streamerID="streamerID"
+      :changePlayerSize="__changePlayerSize"
+    />
 
-    <!-- <Chat :isPlayerFull="isPlayerFull" :userName="userName" /> -->
+    <Chat :isPlayerFull="isPlayerFull" :userName="userName" />
   </div>
 </template>
 
 <script>
-// import Chat from '@/components/stream-page/Chat'
+import Chat from '@/components/stream-page/Chat'
 import Player from '@/components/stream-page/Player'
 
 export default {
   layout: 'stream-page',
-  components: { Player },
+  components: { Player, Chat },
   data: () => ({
     userName: null,
     streamerID: null,
@@ -21,6 +25,11 @@ export default {
   created() {
     this.userName = this.$route.query.channel
     this.streamerID = this.$route.query.id
+  },
+  methods: {
+    __changePlayerSize() {
+      this.isPlayerFull = !this.isPlayerFull
+    }
   }
 }
 </script>

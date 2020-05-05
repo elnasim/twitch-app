@@ -1,8 +1,8 @@
 <template>
   <div ref="playerWrapper" class="player-wrapper">
-    <!-- <div
-      @dblclick="__changePlayerSize()"
-      @click="__closeQualities(), __showControls()"
+    <div
+      @dblclick="__dblClickHandler"
+      @click="__closeQualities(), __toggleControls()"
       class="player__controls-wrap"
     >
       <div :class="{ active: isShowControls }" class="player__controls">
@@ -17,7 +17,12 @@
         >
           <i class="fas fa-heart"></i>
         </div>
-        <div @click.stop="__follow()" v-else class="player__unfollow">
+
+        <div
+          @click.stop="__follow()"
+          v-if="!isFollowed"
+          class="player__unfollow"
+        >
           <i class="far fa-heart"></i>
         </div>
 
@@ -42,30 +47,34 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="player__qualities"></div>
+    <div v-if="isPlayerLoading" class="player__loading">
+      Loading...
+    </div>
 
-      <div v-if="isPlayerLoading" class="player__loading">
-        Loading...
-      </div>
-    </div> -->
-
-    <!-- <QualityChange
+    <QualityChange
+      v-if="qualities"
       :qualities="qualities"
       :isShow="showQualityChange"
       :changeQuality="__changeQuality"
       :currQuality="currQuality"
-    /> -->
+    />
 
-    <!-- <div ref="player" class="player"></div> -->
-    <div ref="embed" class="embed player"></div>
+    <div ref="player" class="player"></div>
   </div>
 </template>
 
 <script>
-// import QualityChange from '@/components/stream-page/QualityChange'
+import QualityChange from '@/components/stream-page/QualityChange'
+import {
+  getStreamInfo,
+  checkFollowChannel,
+  followChannel,
+  unFollowChannel
+} from '@/core/api/api'
 export default {
-  components: {},
+  components: { QualityChange },
   props: {
     userName: {
       type: String,
@@ -74,6 +83,10 @@ export default {
     streamerID: {
       type: String,
       default: ''
+    },
+    changePlayerSize: {
+      type: Function,
+      default: () => {}
     }
   },
   data: () => ({
@@ -82,10 +95,9 @@ export default {
     streamInfo: null,
     isPlayerLoading: false,
     player: null,
-    qualities: [],
+    qualities: null,
     currQuality: null,
-    showQualityChange: false,
-    embed: null
+    showQualityChange: false
   }),
   mounted() {
     this.isPlayerLoading = true
@@ -94,34 +106,35 @@ export default {
       channel: this.userName,
       width: '100%',
       height: '100%',
-      layout: 'video-with-chat',
       theme: 'dark',
       controls: false
     }
 
     // eslint-disable-next-line
-    this.embed = new Twitch.Embed(this.$refs.embed, options)
+    this.player = new Twitch.Player(this.$refs.player, options)
 
     // eslint-disable-next-line
-    this.embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
-      const player = this.embed.getPlayer()
-      player.play()
+    this.player.addEventListener(Twitch.Player.PLAYING, () => {
+      this.qualities = this.player.getQualities()
+      this.isPlayerLoading = false
+      this.currQuality = this.player.getQuality()
+      this.player.setMuted(false)
     })
 
-    // this.__getStreamInfo()
+    this.__getStreamInfo()
 
-    // this.__checkFollowChannel()
+    this.__checkFollowChannel()
   },
   methods: {
-    __changePlayerSize() {
-      this.isPlayerFull = !this.isPlayerFull
+    __dblClickHandler() {
+      this.changePlayerSize()
     },
 
     __closeQualities() {
       this.showQualityChange = false
     },
 
-    __showControls() {
+    __toggleControls() {
       if (!this.isShowControls) {
         this.isShowControls = true
       } else {
@@ -138,10 +151,8 @@ export default {
 
       if (res) {
         const userID = this.$store.state.auth.userID
-        const data = await this.$store.dispatch('favorites/unFollowChannel', [
-          userID,
-          this.userID
-        ])
+        const token = localStorage.getItem('myTwitchToken')
+        const data = await unFollowChannel(userID, this.streamerID, token)
         if (data) {
           this.isFollowed = false
         }
@@ -150,10 +161,8 @@ export default {
 
     async __follow() {
       const userID = this.$store.state.auth.userID
-      const data = await this.$store.dispatch('favorites/followChannel', [
-        userID,
-        this.userID
-      ])
+      const token = localStorage.getItem('myTwitchToken')
+      const data = await followChannel(userID, this.streamerID, token)
       if (data) {
         this.isFollowed = true
       }
@@ -169,26 +178,20 @@ export default {
     },
 
     async __getStreamInfo() {
-      const data = await this.$axios.$get(
-        `https://api.twitch.tv/kraken/streams/${this.userID}`,
-        {
-          headers: {
-            Accept: 'application/vnd.twitchtv.v5+json',
-            'Client-ID': 'z97pdq1cei4wqu42l3kkkdnseq06bj'
-          }
-        }
-      )
+      const { data } = await getStreamInfo(this.streamerID)
       this.streamInfo = data.stream
     },
 
     async __checkFollowChannel() {
       await this.$store.dispatch('auth/validateAuth')
       const userID = this.$store.state.auth.userID
-      const data = await this.$store.dispatch('favorites/checkFollowChannel', [
-        userID,
-        this.userID
-      ])
-      this.isFollowed = data
+      const token = localStorage.getItem('myTwitchToken')
+
+      const data = await checkFollowChannel(userID, this.streamerID, token)
+
+      if (data) {
+        this.isFollowed = true
+      }
     }
   }
 }
@@ -226,9 +229,13 @@ export default {
   opacity: 0;
   transition: 0.25s;
   user-select: none;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
   &.active {
     opacity: 1;
     user-select: all;
+    pointer-events: all;
   }
 }
 
