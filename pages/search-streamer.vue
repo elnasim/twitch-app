@@ -7,14 +7,14 @@
     </div>
 
     <div class="search-form-wrapper">
-      <form @submit.prevent="onSearch" class="search-form">
+      <form @submit.prevent="__search" class="search-form">
         <input v-model="input" type="text" class="search-form__input" />
         <button class="search-form__btn">Поиск</button>
       </form>
     </div>
 
-    <div v-if="data" class="search-page__row">
-      <div v-for="item of data" :key="item._id" class="col">
+    <div v-if="_getData" class="search-page__row">
+      <div v-for="item of _getData" :key="item._id" class="col">
         <StreamerPreview
           :img="item.logo"
           :title="item.display_name"
@@ -22,35 +22,42 @@
         />
       </div>
     </div>
+
+    <Loading v-if="isLoading" />
   </div>
 </template>
 
 <script>
 import StreamerPreview from '~/components/search-page/StreamerPreview'
+import Loading from '~/components/app/Loading'
 
 export default {
-  components: { StreamerPreview },
+  components: { StreamerPreview, Loading },
   data: () => ({
     input: '',
-    data: ''
+    isLoading: false
   }),
-  methods: {
-    async onSearch() {
-      const config = {
-        headers: {
-          accept: 'application/vnd.twitchtv.v5+json',
-          Authorization: `OAuth ${localStorage.getItem('myTwitchToken')}`
-        }
+  computed: {
+    _getData() {
+      if (this.$store.state.search.searchData) {
+        return this.$store.state.search.searchData
       }
 
-      try {
-        const data = await this.$axios.$get(
-          `https://api.twitch.tv/kraken/users?login=${this.input}`,
-          config
-        )
-
-        this.data = data.users
-      } catch (error) {}
+      return null
+    }
+  },
+  created() {
+    this.$store.dispatch('search/clearData')
+  },
+  methods: {
+    async __search() {
+      if (this.input.trim().length > 2) {
+        this.isLoading = true
+        await this.$store.dispatch('search/getChannels', this.input)
+        this.input = ''
+        this.isLoading = false
+      }
+      return false
     }
   }
 }

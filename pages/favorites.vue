@@ -4,7 +4,7 @@
       Авторизация
     </nuxt-link>
 
-    <div v-else-if="_isAuth === true" class="favorites-page-row">
+    <div v-else-if="_isAuth === true && _favorites" class="favorites-page-row">
       <div
         v-for="item of _favorites"
         :key="item._id"
@@ -21,6 +21,10 @@
         />
       </div>
     </div>
+
+    <div v-if="_isAuth && !_favorites" class="no-streams">
+      Активных стримов нет
+    </div>
   </div>
 </template>
 
@@ -35,7 +39,10 @@ export default {
     },
 
     _favorites() {
-      return this.$store.state.favorites.favorites
+      if (this.$store.state.favorites.favorites) {
+        return this.$store.state.favorites.favorites
+      }
+      return null
     }
   },
   mounted() {
@@ -74,5 +81,15 @@ export default {
 .favorites-page-col {
   width: 33.33%;
   padding: 0 10px;
+}
+
+.no-streams {
+  color: #ffffff;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
 }
 </style>

@@ -33,6 +33,7 @@ export default {
 <style lang="scss" scoped>
 .streamer-preview {
   margin-bottom: 40px;
+  display: block;
 }
 
 .streamer-preview__preview {

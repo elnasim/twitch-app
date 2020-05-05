@@ -11,6 +11,7 @@ function config(token = '') {
   }
 }
 
+// Игры по количеству зрителей
 export async function games(pagination = 0) {
   const data = await axios.get(
     `https://api.twitch.tv/kraken/games/top?offset=${pagination}`,
@@ -19,6 +20,7 @@ export async function games(pagination = 0) {
   return data
 }
 
+// Стримы конкретной игры с фильтром по языку
 export async function streams(id, lang, pagination = '') {
   let data
   if (lang === 'all') {
@@ -35,6 +37,7 @@ export async function streams(id, lang, pagination = '') {
   return data
 }
 
+// Подписки
 export async function favorites(token) {
   const data = await axios.get(
     `https://api.twitch.tv/kraken/streams/followed`,
@@ -44,6 +47,7 @@ export async function favorites(token) {
   return data
 }
 
+// Инфо о стримере
 export async function streamerData(streamerName, token = '') {
   try {
     const data = await axios.get(
@@ -56,11 +60,38 @@ export async function streamerData(streamerName, token = '') {
   }
 }
 
+// Записи стримера
 export async function streamerVideos(streamerID, token = '') {
   try {
     const data = await axios.get(
       `https://api.twitch.tv/helix/videos?user_id=${streamerID}&first=6&sort=time`,
       config(token)
+    )
+    return data
+  } catch (error) {
+    console.log('--->', error)
+  }
+}
+
+// Поиск стримеров
+export async function searchChannels(query) {
+  try {
+    const data = await axios.get(
+      `https://api.twitch.tv/kraken/search/channels?query=${query}`,
+      config()
+    )
+    return data
+  } catch (error) {
+    console.log('--->', error)
+  }
+}
+
+// ПОиск игр
+export async function searchGames(query) {
+  try {
+    const data = await axios.get(
+      `https://api.twitch.tv/kraken/search/games?query=${query}`,
+      config()
     )
     return data
   } catch (error) {
