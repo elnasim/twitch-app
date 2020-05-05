@@ -1,10 +1,6 @@
 <template>
   <div class="streamer-page__col-videos col">
-    <a
-      :href="`https://www.twitch.tv/videos/${id}`"
-      class="video-streamer-page streamer-page__video"
-      target="_blank"
-    >
+    <a :href="`/vod?id=${id}`" class="video-streamer-page streamer-page__video">
       <div
         :style="`background-image:url(${_preview})`"
         class="video-streamer-page__preview"
