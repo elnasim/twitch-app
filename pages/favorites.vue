@@ -81,6 +81,14 @@ export default {
 .favorites-page-col {
   width: 33.33%;
   padding: 0 10px;
+
+  @media (max-width: 991px) {
+    width: 50%;
+  }
+
+  @media (max-width: 479px) {
+    width: 100%;
+  }
 }
 
 .no-streams {

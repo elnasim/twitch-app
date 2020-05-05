@@ -1,17 +1,15 @@
 <template>
-  <dir>
-    <div v-if="isShow" class="quality-change">
-      <div
-        v-for="item of qualities"
-        :key="item.group"
-        @click="changeQuality(item.group)"
-        :class="{ active: currQuality === item.group }"
-        class="quality"
-      >
-        {{ item.name }}
-      </div>
+  <div v-if="isShow" class="quality-change">
+    <div
+      v-for="item of qualities"
+      :key="item.group"
+      @click="changeQuality(item.group)"
+      :class="{ active: currQuality === item.group }"
+      class="quality"
+    >
+      {{ item.name }}
     </div>
-  </dir>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,9 @@
 <template>
-  <div ref="playerWrapper" class="player-wrapper">
+  <div
+    ref="playerWrapper"
+    :class="isPlayerFull ? 'full' : ''"
+    class="player-wrapper"
+  >
     <div
       @dblclick="__dblClickHandler"
       @click="__closeQualities(), __toggleControls()"
@@ -97,7 +101,8 @@ export default {
     player: null,
     qualities: null,
     currQuality: null,
-    showQualityChange: false
+    showQualityChange: false,
+    isPlayerFull: true
   }),
   mounted() {
     this.isPlayerLoading = true
@@ -127,7 +132,7 @@ export default {
   },
   methods: {
     __dblClickHandler() {
-      this.changePlayerSize()
+      this.isPlayerFull = !this.isPlayerFull
     },
 
     __closeQualities() {
@@ -200,7 +205,13 @@ export default {
 <style lang="scss" scoped>
 .player-wrapper {
   position: relative;
-  flex: 1;
+  width: 70%;
+  @media (max-width: 575px) {
+    width: 100%;
+  }
+  &.full {
+    width: 100%;
+  }
 }
 
 .player {

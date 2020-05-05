@@ -1,5 +1,5 @@
 <template>
-  <div :style="isPlayerFull ? 'display: none' : 'display: block'" class="chat">
+  <div class="chat">
     <iframe
       :src="`https://www.twitch.tv/embed/${userName}/chat?darkpopout`"
       frameborder="0"
@@ -14,10 +14,6 @@
 <script>
 export default {
   props: {
-    isPlayerFull: {
-      type: Boolean,
-      default: false
-    },
     userName: {
       type: String,
       default: null
@@ -28,6 +24,6 @@ export default {
 
 <style lang="scss" scoped>
 .chat {
-  width: 30%;
+  flex: 1;
 }
 </style>

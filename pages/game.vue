@@ -108,6 +108,7 @@ export default {
   cursor: pointer;
   text-transform: uppercase;
   padding: 10px;
+  margin-bottom: 20px;
 }
 
 .row-stream-page {
