@@ -6,16 +6,19 @@
         class="streamer-page__header"
       >
         <div class="streamer-page__info">
-          <div class="streamer-page__name">
-            <div v-if="_streamerData.partner" class="streamer-page__patner">
-              ✓
+          <div class="streamer-page__info-row">
+            <div class="streamer-page__name">
+              <div v-if="_streamerData.partner" class="streamer-page__patner">
+                ✓
+              </div>
+              {{ _streamerData.display_name }}
             </div>
-            {{ _streamerData.display_name }}
+            <img :src="_streamerData.logo" class="streamer-page__logo" />
+            <div class="streamer-page__views">
+              {{ _streamerData.views }} просмотров
+            </div>
           </div>
-          <img :src="_streamerData.logo" class="streamer-page__logo" />
-          <div class="streamer-page__views">
-            {{ _streamerData.views }} просмотров
-          </div>
+          <div class="streamer-page__desc">{{ _streamerData.description }}</div>
         </div>
       </div>
 
@@ -24,7 +27,7 @@
           <StreamerVideo
             v-for="video in _videosData"
             :key="video._id"
-            :preview="video.thumbnails.large[0].url"
+            :preview="video.preview.large"
             :title="video.title"
             :duration="video.length"
             :views="video.views"
@@ -79,15 +82,22 @@ export default {
 .streamer-page__info {
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   color: #ffffff;
   background: radial-gradient(
     circle,
-    rgba(20, 20, 20, 1) 0%,
+    rgba(20, 20, 20, 1) 10%,
     rgba(255, 255, 255, 0) 100%
   );
   padding: 20px;
+}
+
+.streamer-page__info-row {
+  display: flex;
+  align-items: center;
 }
 
 .streamer-page__logo {

@@ -17,6 +17,7 @@
           :viewers="item.viewers"
           :channelId="item.channel._id"
           :channelLang="item.channel.language"
+          :game="item.channel.game"
           :apiType="'kraken'"
         />
       </div>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import Stream from '~/components/game-page/Stream'
+import Stream from '~/components/favorites-page/Stream'
 
 export default {
   components: { Stream },

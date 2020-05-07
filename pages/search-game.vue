@@ -8,7 +8,12 @@
 
     <div class="search-form-wrapper">
       <form @submit.prevent="__search" class="search-form">
-        <input v-model="input" type="text" class="search-form__input" />
+        <input
+          v-model="input"
+          type="text"
+          class="search-form__input"
+          placeholder="Введите название игры"
+        />
         <button class="search-form__btn">Поиск</button>
       </form>
     </div>

@@ -1,25 +1,37 @@
 <template>
-  <div class="col">
-    <nuxt-link
-      :to="`/stream?channel=${userName}&id=${channelId}`"
-      class="stream"
+  <nuxt-link :to="`/stream?channel=${userName}&id=${channelId}`" class="stream">
+    <div
+      v-if="apiType === 'helix'"
+      :style="`background-image: url(${_img})`"
+      class="stream__preview"
     >
-      <div :style="`background-image: url(${preview})`" class="stream__preview">
-        <div class="stream__viewers">{{ viewers }} зрителей</div>
+      <div class="stream__viewers">
+        <span class="stream__viewers-round"></span>
+        {{ viewers }} зрителей
       </div>
-      <div class="stream__info">
-        <div
-          :style="`background-image: url(${logo})`"
-          class="stream__logo"
-        ></div>
-        <div class="stream__info-row">
-          <div class="stream__profile-name">{{ userName }}</div>
-          <div class="stream__profile-name">{{ game }}</div>
-          <div class="stream__title">{{ title }}</div>
+    </div>
+
+    <div
+      v-if="apiType === 'kraken'"
+      :style="`background-image: url(${preview})`"
+      class="stream__preview"
+    >
+      <div class="stream__viewers">
+        <span class="stream__viewers-round"></span>
+        {{ viewers }} зрителей
+      </div>
+    </div>
+
+    <div class="stream__info">
+      <div class="stream__info-row">
+        <div class="stream__profile-name">
+          [{{ channelLang }}] {{ userName }}
         </div>
+        <div class="stream__title">{{ title }}</div>
+        <div class="stream__game">{{ game }}</div>
       </div>
-    </nuxt-link>
-  </div>
+    </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -49,19 +61,29 @@ export default {
       type: Number,
       default: null
     },
+    channelLang: {
+      type: String,
+      default: ''
+    },
+    apiType: {
+      type: String,
+      default: ''
+    },
     game: {
       type: String,
       default: ''
+    }
+  },
+  computed: {
+    _img() {
+      const str = this.preview.slice(0, -20)
+      return `${str}600x400.jpg`
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.col {
-  width: 50%;
-}
-
 .stream {
   display: flex;
   flex-direction: column;
@@ -70,24 +92,40 @@ export default {
 
 .stream__info {
   display: flex;
-  padding: 10px;
+  padding: 10px 0;
+}
+
+.stream__info-row {
+  overflow: hidden;
 }
 
 .stream__logo {
-  width: 50px;
-  height: 50px;
-  background-size: cover;
-  background-position: center;
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
   border-radius: 100%;
   margin-right: 10px;
 }
 
 .stream__profile-name {
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stream__title {
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stream__game {
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stream__preview {
@@ -107,5 +145,13 @@ export default {
 
 .stream__viewers {
   color: #ffffff;
+}
+
+.stream__viewers-round {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: red;
 }
 </style>
