@@ -21,16 +21,19 @@ export const mutations = {
 
 export const actions = {
   async getStreams({ commit }, payload) {
-    const data = await streams(payload.id, payload.lang)
-
-    commit('SET_DATA', data.data.data)
-    commit('SET_PAGINATION_ID', data.data.pagination.cursor)
+    const { data } = await streams(payload.game, payload.lang)
+    commit('SET_DATA', data.streams)
+    commit('SET_PAGINATION_ID', 25)
   },
 
   async moreStreams({ commit, state }, payload) {
-    const data = await streams(payload.id, payload.lang, state.paginationID)
-
-    commit('MORE_DATA', data.data.data)
-    commit('SET_PAGINATION_ID', data.data.pagination.cursor)
+    const pagination = state.paginationID
+    const { data } = await streams(
+      payload.game,
+      payload.lang,
+      state.paginationID
+    )
+    commit('MORE_DATA', data.streams)
+    commit('SET_PAGINATION_ID', pagination + 25)
   }
 }

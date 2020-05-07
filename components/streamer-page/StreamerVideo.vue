@@ -2,7 +2,7 @@
   <div class="streamer-page__col-videos col">
     <a :href="`/vod?id=${id}`" class="video-streamer-page streamer-page__video">
       <div
-        :style="`background-image:url(${_preview})`"
+        :style="`background-image:url(${preview})`"
         class="video-streamer-page__preview"
       ></div>
       <div class="video-streamer-page__info">
@@ -11,7 +11,7 @@
         </div>
 
         <div class="video-streamer-page__time">
-          Продолжительность: {{ duration }}
+          Продолжительность: {{ _time }}
         </div>
 
         <div class="video-streamer-page__views">Просмотры: {{ views }}</div>
@@ -53,6 +53,13 @@ export default {
         return img
       }
       return 'https://vod-secure.twitch.tv/_404/404_processing_320x180.png'
+    },
+    _time() {
+      const time = this.duration
+      const hours = time / 60 / 60
+      const hour = Math.floor(hours)
+      const min = Math.floor((hours - hour) * 60)
+      return `${hour}:${min}`
     }
   }
 }

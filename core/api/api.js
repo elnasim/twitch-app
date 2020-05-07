@@ -21,16 +21,16 @@ export async function games(pagination = 0) {
 }
 
 // Стримы конкретной игры с фильтром по языку
-export async function streams(id, lang, pagination = '') {
+export async function streams(id, lang, pagination = 0) {
   let data
   if (lang === 'all') {
     data = await axios.get(
-      `https://api.twitch.tv/helix/streams/?game_id=${id}&after=${pagination}`,
+      `https://api.twitch.tv/kraken/streams/?game=${id}&offset=${pagination}`,
       config()
     )
   } else {
     data = await axios.get(
-      `https://api.twitch.tv/helix/streams/?game_id=${id}&language=${lang}&after=${pagination}`,
+      `https://api.twitch.tv/kraken/streams/?game=${id}&language=${lang}&offset=${pagination}`,
       config()
     )
   }
@@ -64,7 +64,7 @@ export async function getStreamInfo(streamerID) {
 export async function streamerData(streamerName) {
   try {
     const data = await axios.get(
-      `https://api.twitch.tv/helix/users?login=${streamerName}`,
+      `https://api.twitch.tv/kraken/search/channels?query=${streamerName}&limit=1`,
       config()
     )
     return data
@@ -77,7 +77,7 @@ export async function streamerData(streamerName) {
 export async function streamerVideos(streamerID) {
   try {
     const data = await axios.get(
-      `https://api.twitch.tv/helix/videos?user_id=${streamerID}&first=6&sort=time`,
+      `https://api.twitch.tv/kraken/channels/${streamerID}/videos`,
       config()
     )
     return data

@@ -15,7 +15,7 @@
           :userName="item.channel.display_name"
           :title="item.channel.status"
           :viewers="item.viewers"
-          :channelId="item.channel._id.toString()"
+          :channelId="item.channel._id"
           :channelLang="item.channel.language"
           :apiType="'kraken'"
         />

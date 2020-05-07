@@ -16,15 +16,15 @@
         Показать трансляции на всех языках
       </nuxt-link>
       <div class="row-stream-page">
-        <div v-for="item of _streams" :key="item.id" class="col-stream-page">
+        <div v-for="item of _streams" :key="item._id" class="col-stream-page">
           <Stream
-            :preview="item.thumbnail_url"
-            :userName="item.user_name"
-            :title="item.title"
-            :viewers="item.viewer_count"
-            :channelId="item.user_id"
-            :channelLang="item.language"
-            :apiType="'helix'"
+            :preview="item.preview.large"
+            :userName="item.channel.display_name"
+            :title="item.channel.status"
+            :viewers="item.viewers"
+            :channelId="item.channel._id"
+            :channelLang="item.channel.language"
+            :apiType="'kraken'"
           />
         </div>
       </div>
@@ -51,7 +51,7 @@ export default {
   computed: {
     _streams() {
       if (this.$store.state.game.data) return this.$store.state.game.data
-      return []
+      return null
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -62,7 +62,7 @@ export default {
   mounted() {
     this.title = this.$route.query.title
     this.language = this.$route.query.lang
-    this.id = this.$route.query.id
+    this.id = +this.$route.query.id
 
     this.__getStreams()
   },

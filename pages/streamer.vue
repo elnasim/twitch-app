@@ -1,25 +1,19 @@
 <template>
   <div v-if="_streamerData" class="streamer-page">
     <div
-      :style="`background-image:url(${_streamerData.offline_image_url})`"
+      :style="`background-image:url(${_streamerData.profile_banner})`"
       class="streamer-page__header"
     >
       <div class="streamer-page__info">
         <div class="streamer-page__name">
-          <div
-            v-if="_streamerData.broadcaster_type === 'partner'"
-            class="streamer-page__patner"
-          >
+          <div v-if="_streamerData.partner" class="streamer-page__patner">
             ✓
           </div>
           {{ _streamerData.display_name }}
         </div>
-        <img
-          :src="_streamerData.profile_image_url"
-          class="streamer-page__logo"
-        />
+        <img :src="_streamerData.logo" class="streamer-page__logo" />
         <div class="streamer-page__views">
-          {{ _streamerData.view_count }} просмотров
+          {{ _streamerData.views }} просмотров
         </div>
       </div>
     </div>
@@ -28,12 +22,12 @@
       <div class="streamer-page__row-videos row">
         <StreamerVideo
           v-for="video in _videosData"
-          :key="video.id"
-          :preview="video.thumbnail_url"
+          :key="video._id"
+          :preview="video.thumbnails.large[0].url"
           :title="video.title"
-          :duration="video.duration"
-          :views="video.view_count"
-          :id="video.id"
+          :duration="video.length"
+          :views="video.views"
+          :id="video._id"
         />
       </div>
     </div>
@@ -48,13 +42,13 @@ export default {
   computed: {
     _streamerData() {
       if (this.$store.state.streamer.data) {
-        return this.$store.state.streamer.data.data.data[0]
+        return this.$store.state.streamer.data
       }
       return null
     },
     _videosData() {
       if (this.$store.state.streamer.videos) {
-        return this.$store.state.streamer.videos.data.data
+        return this.$store.state.streamer.videos
       }
       return null
     }

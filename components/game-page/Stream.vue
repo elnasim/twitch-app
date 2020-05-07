@@ -58,7 +58,7 @@ export default {
       default: ''
     },
     channelId: {
-      type: String,
+      type: Number,
       default: null
     },
     channelLang: {

@@ -17,16 +17,14 @@ export const mutations = {
 
 export const actions = {
   async loadStreamerData({ commit, dispatch }, streamerName) {
-    const token = localStorage.getItem('myTwitchToken')
-    const data = await streamerData(streamerName, token)
-    const streamerID = data.data.data[0].id
-    commit('SET_DATA', data)
+    const { data } = await streamerData(streamerName)
+    const streamerID = data.channels[0]._id
+    commit('SET_DATA', data.channels[0])
     dispatch('loadVideos', streamerID)
   },
 
   async loadVideos({ commit }, streamerID) {
-    const token = localStorage.getItem('myTwitchToken')
-    const data = await streamerVideos(streamerID, token)
-    commit('SET_VIDEOS', data)
+    const { data } = await streamerVideos(streamerID)
+    commit('SET_VIDEOS', data.videos)
   }
 }
