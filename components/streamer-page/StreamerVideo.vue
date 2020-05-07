@@ -34,8 +34,8 @@ export default {
       default: ''
     },
     duration: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     },
     views: {
       type: Number,

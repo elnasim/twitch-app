@@ -1,44 +1,48 @@
 <template>
-  <div v-if="_streamerData" class="streamer-page">
-    <div
-      :style="`background-image:url(${_streamerData.profile_banner})`"
-      class="streamer-page__header"
-    >
-      <div class="streamer-page__info">
-        <div class="streamer-page__name">
-          <div v-if="_streamerData.partner" class="streamer-page__patner">
-            ✓
+  <div>
+    <div v-if="_streamerData" class="streamer-page">
+      <div
+        :style="`background-image:url(${_streamerData.profile_banner})`"
+        class="streamer-page__header"
+      >
+        <div class="streamer-page__info">
+          <div class="streamer-page__name">
+            <div v-if="_streamerData.partner" class="streamer-page__patner">
+              ✓
+            </div>
+            {{ _streamerData.display_name }}
           </div>
-          {{ _streamerData.display_name }}
-        </div>
-        <img :src="_streamerData.logo" class="streamer-page__logo" />
-        <div class="streamer-page__views">
-          {{ _streamerData.views }} просмотров
+          <img :src="_streamerData.logo" class="streamer-page__logo" />
+          <div class="streamer-page__views">
+            {{ _streamerData.views }} просмотров
+          </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="_videosData" class="streamer-page__videos container">
-      <div class="streamer-page__row-videos row">
-        <StreamerVideo
-          v-for="video in _videosData"
-          :key="video._id"
-          :preview="video.thumbnails.large[0].url"
-          :title="video.title"
-          :duration="video.length"
-          :views="video.views"
-          :id="video._id"
-        />
+      <div v-if="_videosData" class="streamer-page__videos container">
+        <div class="streamer-page__row-videos row">
+          <StreamerVideo
+            v-for="video in _videosData"
+            :key="video._id"
+            :preview="video.thumbnails.large[0].url"
+            :title="video.title"
+            :duration="video.length"
+            :views="video.views"
+            :id="video._id"
+          />
+        </div>
       </div>
     </div>
+    <Loading v-else />
   </div>
 </template>
 
 <script>
 import StreamerVideo from '@/components/streamer-page/StreamerVideo'
+import Loading from '@/components/app/Loading'
 
 export default {
-  components: { StreamerVideo },
+  components: { StreamerVideo, Loading },
   computed: {
     _streamerData() {
       if (this.$store.state.streamer.data) {
