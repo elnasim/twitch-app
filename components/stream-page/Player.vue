@@ -53,10 +53,6 @@
       </div>
     </div>
 
-    <div v-if="isPlayerLoading" class="player__loading">
-      Loading...
-    </div>
-
     <QualityChange
       v-if="qualities"
       :qualities="qualities"
@@ -97,7 +93,6 @@ export default {
     isShowControls: false,
     isFollowed: false,
     streamInfo: null,
-    isPlayerLoading: false,
     player: null,
     qualities: null,
     currQuality: null,
@@ -105,8 +100,6 @@ export default {
     isPlayerFull: true
   }),
   mounted() {
-    this.isPlayerLoading = true
-
     const options = {
       channel: this.userName,
       width: '100%',
@@ -121,7 +114,6 @@ export default {
     // eslint-disable-next-line
     this.player.addEventListener(Twitch.Player.PLAYING, () => {
       this.qualities = this.player.getQualities()
-      this.isPlayerLoading = false
       this.currQuality = this.player.getQuality()
       this.player.setMuted(false)
     })
